@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
+        <property name="hibernate.connection.driver_class">org.h2.Driver</property>
+        <property name="hibernate.connection.url">jdbc:h2:~/H2/JournalDB</property>
+        <property name="hibernate.connection.username">journal</property>
+        <property name="hibernate.connection.password">journal</property>
+        
+        <!--property name="hibernate.dialect">org.hibernate.dialect.DerbyDialect</property>
+        <property name="hibernate.connection.driver_class">org.apache.derby.jdbc.EmbeddedDriver</property>
+        <property name="hibernate.connection.url">jdbc:derby:DiasledDB;create=true</property>
+        <property name="hibernate.connection.username">diasled</property>
+        <property name="hibernate.connection.password">diasled</property-->
+        <!--property name="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property-->
+        
+        <!--property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/qsystem</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root</property-->
+        
+        <!--property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql:mxj:///DiasledDBm?server.initialize-user=true&amp;createDatabaseIfNotExist=true&amp;server.basedir=DiaDB&amp;server.datadir=DiaDB/data</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root</property-->
+        <!--property name="hibernate.connection.pool_size">128</property-->
+        <property name="hibernate.show_sql">false</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <!-- Important -->
+        <!--property name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+        <property name="hibernate.c3p0.max_size">100</property>
+        <property name="hibernate.c3p0.min_size">0</property>
+        <property name="hibernate.c3p0.acquire_increment">1</property>
+        <property name="hibernate.c3p0.idle_test_period">300</property>
+        <property name="hibernate.c3p0.max_statements">0</property>
+        <property name="hibernate.c3p0.timeout">100</property-->
+        <!-- configuration pool via c3p0-->   
+        <property name="c3p0.acquire_increment">1</property>   
+        <property name="c3p0.idle_test_period">100</property> <!-- seconds -->   
+        <property name="c3p0.max_size">100</property>   
+        <property name="c3p0.max_statements">0</property>   
+        <property name="c3p0.min_size">10</property>   
+        <property name="c3p0.timeout">100</property> <!-- seconds --> 
+        <!-- Persistent classes -->
+        <!--mapping class="ru.apertum.diasled.db.Book"/>
+        <mapping class="ru.apertum.diasled.db.Author"/-->
+        <mapping class="ru.apertum.journal.model.Patient"/>
+        <mapping class="ru.apertum.journal.model.Visit"/>
+        <mapping class="ru.apertum.journal.model.Document"/>
+        <mapping class="ru.apertum.journal.model.Attached"/>
+        <mapping class="ru.apertum.journal.model.Storage"/>
+    </session-factory>
+</hibernate-configuration>

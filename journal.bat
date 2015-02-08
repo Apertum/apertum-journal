@@ -1,0 +1,1 @@
+start javaw -cp dist/Journal.jar ru.apertum.journal.forms.FJournal
