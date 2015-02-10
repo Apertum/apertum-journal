@@ -18,21 +18,28 @@ package ru.apertum.journal.model.exam;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Set;
+import java.util.ResourceBundle;
 import javax.swing.tree.TreeNode;
 import ru.apertum.journal.IDocController;
 import ru.apertum.journal.model.DocControllersList;
 import ru.apertum.journal.model.Document;
+import ru.apertum.qsystem.client.Locales;
 
 /**
  *
  * @author Evgeniy Egorov, Aperum Projects
  */
 public class RootNodeDoc extends ADocNode {
+    
+    private static final ResourceBundle translate = ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal", Locales.getInstance().getLangCurrent());
+
+    private static String l(String key) {
+        return translate.getString(key);
+    }
 
     @Override
     public String toString() {
-        return "Документы по посещению";
+        return l("docs_for_visit");
     }
     final private LinkedList<Document> nodes;
     final private HashMap<Long, TypeDocNode> docTypesNodeAll = new HashMap<>();

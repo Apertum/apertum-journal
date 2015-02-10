@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -36,6 +37,7 @@ import ru.apertum.journal.model.Document;
 import ru.apertum.journal.model.Storage;
 import ru.apertum.journal.model.Visit;
 import ru.apertum.journal.model.patients.AttachedTableModel;
+import ru.apertum.qsystem.client.Locales;
 import ru.apertum.qsystem.common.QLog;
 import ru.apertum.qsystem.common.Uses;
 import ru.apertum.qsystem.common.exceptions.ClientException;
@@ -50,6 +52,7 @@ public class FDocMaster extends javax.swing.JDialog {
     final private Document doc;
     final private IDocController blanc;
     public static JLabel hackState;
+    private static final ResourceBundle trn = ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal", Locales.getInstance().getLangCurrent());
 
     /**
      * Creates new form FDocMaster2
@@ -160,7 +163,7 @@ public class FDocMaster extends javax.swing.JDialog {
         jPanel1.setBorder(new javax.swing.border.MatteBorder(null));
 
         buttonOK.setBackground(new java.awt.Color(0, 255, 0));
-        buttonOK.setText("OK");
+        buttonOK.setText(trn.getString("ok")); // NOI18N
         buttonOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonOKActionPerformed(evt);
@@ -168,21 +171,21 @@ public class FDocMaster extends javax.swing.JDialog {
         });
 
         buttonCancel.setBackground(new java.awt.Color(255, 0, 0));
-        buttonCancel.setText("Отменить");
+        buttonCancel.setText(trn.getString("cancel")); // NOI18N
         buttonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonCancelActionPerformed(evt);
             }
         });
 
-        buttonPrint.setText("Печать");
+        buttonPrint.setText(trn.getString("print")); // NOI18N
         buttonPrint.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonPrintActionPerformed(evt);
             }
         });
 
-        buttonExport.setText("Экспорт");
+        buttonExport.setText(trn.getString("export")); // NOI18N
         buttonExport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonExportActionPerformed(evt);
@@ -190,7 +193,7 @@ public class FDocMaster extends javax.swing.JDialog {
         });
 
         buttonApply.setBackground(new java.awt.Color(255, 255, 0));
-        buttonApply.setText("Применить");
+        buttonApply.setText(trn.getString("apply")); // NOI18N
         buttonApply.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonApplyActionPerformed(evt);
@@ -233,11 +236,11 @@ public class FDocMaster extends javax.swing.JDialog {
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 698, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 356, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -251,12 +254,12 @@ public class FDocMaster extends javax.swing.JDialog {
             .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("Параметры", jPanel4);
+        jTabbedPane1.addTab(trn.getString("params"), jPanel4); // NOI18N
 
         jPanel7.setBorder(new javax.swing.border.MatteBorder(null));
 
         btnRemoveAttached.setBackground(new java.awt.Color(255, 0, 0));
-        btnRemoveAttached.setText("Удалить");
+        btnRemoveAttached.setText(trn.getString("remove")); // NOI18N
         btnRemoveAttached.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRemoveAttachedActionPerformed(evt);
@@ -264,7 +267,7 @@ public class FDocMaster extends javax.swing.JDialog {
         });
 
         btnAddAttached.setBackground(new java.awt.Color(0, 255, 0));
-        btnAddAttached.setText("Добавить");
+        btnAddAttached.setText(trn.getString("add")); // NOI18N
         btnAddAttached.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddAttachedActionPerformed(evt);
@@ -272,14 +275,14 @@ public class FDocMaster extends javax.swing.JDialog {
         });
 
         btnEditAttached.setBackground(new java.awt.Color(255, 255, 0));
-        btnEditAttached.setText("Изменить");
+        btnEditAttached.setText(trn.getString("edit")); // NOI18N
         btnEditAttached.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditAttachedActionPerformed(evt);
             }
         });
 
-        btnDownloadAttached.setText("Загрузить");
+        btnDownloadAttached.setText(trn.getString("download")); // NOI18N
         btnDownloadAttached.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDownloadAttachedActionPerformed(evt);
@@ -331,7 +334,7 @@ public class FDocMaster extends javax.swing.JDialog {
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jTabbedPane1.addTab("Вложения", jPanel6);
+        jTabbedPane1.addTab(trn.getString("attachment"), jPanel6);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -346,9 +349,9 @@ public class FDocMaster extends javax.swing.JDialog {
 
         jPanel3.setBorder(new javax.swing.border.MatteBorder(null));
 
-        jLabel1.setText("Номер документа");
+        jLabel1.setText(trn.getString("doc_num")); // NOI18N
 
-        jLabel3.setText("Дата документа");
+        jLabel3.setText(trn.getString("doc_date")); // NOI18N
 
         labelDate.setEditable(false);
 
@@ -424,8 +427,8 @@ public class FDocMaster extends javax.swing.JDialog {
     private void btnAddAttachedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAttachedActionPerformed
         if (doc == null || doc.getId() == null) {
             JOptionPane.showMessageDialog(this,
-                    "Редактируемый документ не сохранен. Сохраниете данные перед добавлением вложений.",
-                    "Новое вложение",
+                    trn.getString("doc_changet_need_save"),
+                    trn.getString("new_att"),
                     JOptionPane.OK_OPTION);
         } else {
             addNewAttahed();
@@ -451,8 +454,8 @@ public class FDocMaster extends javax.swing.JDialog {
     private void buttonApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonApplyActionPerformed
         apply();
         JOptionPane.showMessageDialog(this,
-                "Документ был успешно сохранен",
-                "Сохранение",
+                trn.getString("doc_was_saved"),
+                trn.getString("saving"),
                 JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_buttonApplyActionPerformed
 
@@ -460,8 +463,8 @@ public class FDocMaster extends javax.swing.JDialog {
         // Обязательные поля
         if (tfNumber.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null,
-                    "Укажите номер документа.",
-                    "Не полные данные",
+                    trn.getString("need_doc_num"),
+                    trn.getString("not_enauht_data"),
                     JOptionPane.NO_OPTION);
             tfNumber.requestFocusInWindow();
             return;
@@ -483,8 +486,8 @@ public class FDocMaster extends javax.swing.JDialog {
         } catch (ClientException ex) {
             System.err.println(ex);
             JOptionPane.showMessageDialog(this,
-                    "Ошибка сохранения документа.",
-                    "Сохранение",
+                    trn.getString("err_save_doc"),
+                    trn.getString("saving"),
                     JOptionPane.ERROR_MESSAGE);
         }
 
@@ -497,8 +500,8 @@ public class FDocMaster extends javax.swing.JDialog {
         // если сегодня уже создали визит то его не нужно еще раз создавать, просто покажем его
 
         if (JOptionPane.showConfirmDialog(this,
-                "Будет добавлено новое вложение для клиента.",
-                "Новое вложение",
+                trn.getString("will_new_att_for_doc"),
+                trn.getString("new_att"),
                 JOptionPane.YES_NO_OPTION) == 1) {
             return;
         }
@@ -516,8 +519,8 @@ public class FDocMaster extends javax.swing.JDialog {
                 Storage.saveStorage(aa.getFile(), att.getId(), null, null, doc.getId(), att.getTitle());
             } catch (ClientException ex) {
                 JOptionPane.showMessageDialog(this,
-                        "Ошибка создания пиложения.",
-                        "Сохранение приложения",
+                        trn.getString("err_create_att"),
+                        trn.getString("saving_att"),
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -525,10 +528,12 @@ public class FDocMaster extends javax.swing.JDialog {
             ((AttachedTableModel) attachedTable.getModel()).update(doc.getAttached());
             ((AttachedTableModel) attachedTable.getModel()).fireTableDataChanged();
         } else {
-            JOptionPane.showMessageDialog(this,
-                    "Не верные параметры вложения.",
-                    "Новое вложение",
-                    JOptionPane.ERROR_MESSAGE);
+            if (aa.isOKpress()) {
+                JOptionPane.showMessageDialog(this,
+                        trn.getString("discorrec_data_for_att"),
+                        trn.getString("new_att"),
+                        JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
@@ -540,12 +545,12 @@ public class FDocMaster extends javax.swing.JDialog {
 
             final Attached attached = model.getRowAt(row);
             if (attached == null || JOptionPane.showConfirmDialog(this,
-                    "Вложение \"" + attached.getTitle() + "\" будет удалено безвозвратно?",
-                    "Удаление вложения",
+                    java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal").getString("will_add_remove"), new Object[] {attached.getTitle()}),
+                    trn.getString("remove_att"),
                     JOptionPane.YES_NO_OPTION) == 1) {
                 return;
             }
-            QLog.l().logger().debug("Удаляем приложение \"" + attached.getTitle() + "\"");
+            QLog.l().logger().debug(java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal").getString("removing_the_att"), new Object[] {attached.getTitle()}));
             // удалим навсегда
 
             doc.getAttached().remove(attached);
@@ -578,8 +583,8 @@ public class FDocMaster extends javax.swing.JDialog {
                     Attached.saveAttached(attached);
                 } catch (ClientException ex) {
                     JOptionPane.showMessageDialog(this,
-                            "Ошибка создания пиложения.",
-                            "Сохранение приложения",
+                            trn.getString("error_create_att"),
+                            trn.getString("saving_att"),
                             JOptionPane.ERROR_MESSAGE);
                     return;
                 }
@@ -606,13 +611,13 @@ public class FDocMaster extends javax.swing.JDialog {
             final byte[] bb = Storage.loadStorage(attached.getId());
 
             final JFileChooser fc = new JFileChooser();
-            fc.setDialogTitle("Сохранение вложения");
+            fc.setDialogTitle(trn.getString("saving_att"));
             fc.setCurrentDirectory(new File("."));
             fc.setSelectedFile(new File(attached.getFileName()));
             if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
                 if (fc.getSelectedFile().exists() && JOptionPane.showConfirmDialog(this,
-                        "Файл \"" + fc.getSelectedFile().getName() + "\" существует. Заменить новым?",
-                        "Сохранение вложения",
+                        java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal").getString("replace_file"), new Object[] {fc.getSelectedFile().getName()}),
+                        trn.getString("saving_att"),
                         JOptionPane.YES_NO_OPTION) == 1) {
                     return;
                 }

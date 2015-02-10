@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Evgeniy Egorov
+ * Copyright (C) 2015 Evgeniy Egorov
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +20,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.ResourceBundle;
 import javax.swing.JPanel;
 import ru.apertum.journal.IDocController;
 import ru.apertum.journal.model.Document;
+import ru.apertum.qsystem.client.Locales;
 import ru.apertum.qsystem.common.GsonPool;
 import ru.apertum.qsystem.common.exceptions.ClientException;
 
@@ -31,6 +33,7 @@ import ru.apertum.qsystem.common.exceptions.ClientException;
  * @author Evgeniy Egorov
  */
 public class PCommentDoc extends javax.swing.JPanel implements IDocController {
+    private static final ResourceBundle trn = ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal", Locales.getInstance().getLangCurrent());
 
     /**
      * Creates new form PCommentDoc
@@ -50,15 +53,9 @@ public class PCommentDoc extends javax.swing.JPanel implements IDocController {
         jScrollPane1 = new javax.swing.JScrollPane();
         taComment = new javax.swing.JTextArea();
 
-        setName("Form"); // NOI18N
-
-        jScrollPane1.setName("jScrollPane1"); // NOI18N
-
         taComment.setColumns(20);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ru.apertum.qsystem.QSystem.class).getContext().getResourceMap(PCommentDoc.class);
-        taComment.setFont(resourceMap.getFont("taComment.font")); // NOI18N
+        taComment.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         taComment.setRows(5);
-        taComment.setName("taComment"); // NOI18N
         jScrollPane1.setViewportView(taComment);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -72,18 +69,9 @@ public class PCommentDoc extends javax.swing.JPanel implements IDocController {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(2, 2, 2)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
-                .addGap(2, 2, 2))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea taComment;
-    // End of variables declaration//GEN-END:variables
 
     @Override
     public Long getId() {
@@ -92,12 +80,12 @@ public class PCommentDoc extends javax.swing.JPanel implements IDocController {
 
     @Override
     public String getName() {
-        return "Комментарии";
+        return trn.getString("comments");
     }
 
     @Override
     public String getDocDescription() {
-        return "Документ содержит только текстовые данные. Используйте его для описания или комментирования посещений.";
+        return trn.getString("comDoc_deckr");
     }
 
     @Override
@@ -167,4 +155,10 @@ public class PCommentDoc extends javax.swing.JPanel implements IDocController {
             this.comments = comments;
         }
     }
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea taComment;
+    // End of variables declaration//GEN-END:variables
 }

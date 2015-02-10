@@ -23,12 +23,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import ru.apertum.journal.forms.FJournal;
+import ru.apertum.qsystem.client.Locales;
 import ru.apertum.qsystem.client.forms.FClient;
 import ru.apertum.qsystem.client.model.QTray;
 import ru.apertum.qsystem.common.QLog;
@@ -40,6 +42,12 @@ import ru.apertum.qsystem.extra.IStartClient;
  * @author Evgeniy Egorov
  */
 public class JournalEmbedded implements IStartClient {
+    
+    private static final ResourceBundle translate = ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal", Locales.getInstance().getLangCurrent());
+
+    private static String loc(String key) {
+        return translate.getString(key);
+    }
 
     @Override
     public void start(FClient fc) {
@@ -125,7 +133,7 @@ public class JournalEmbedded implements IStartClient {
                 fc.setState(JFrame.NORMAL);
             }
         });
-        b.setText("Перейти к управлению очередью");
+        b.setText(loc("to_qms"));
         b.setSize(b.getWidth(), 14);
         b.setPreferredSize(new Dimension(200, 12));
         form.menuBarJournal.add(b);
@@ -140,7 +148,7 @@ public class JournalEmbedded implements IStartClient {
 
     @Override
     public String getDescription() {
-        return "Встроенное использование журнала.";
+        return "Embedded mode of Journal CRM .";
     }
 
     @Override

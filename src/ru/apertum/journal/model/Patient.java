@@ -25,6 +25,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.ResourceBundle;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -47,6 +48,7 @@ import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Restrictions;
 import ru.apertum.journal.IPatientController;
 import ru.apertum.journal.db.HibernateUtil;
+import ru.apertum.qsystem.client.Locales;
 import ru.apertum.qsystem.common.QLog;
 import ru.apertum.qsystem.common.Uses;
 import ru.apertum.qsystem.common.exceptions.ClientException;
@@ -323,13 +325,19 @@ public class Patient implements Serializable {
     //***********************************************************************************************************************************************************************
     //********* SERVICES
     //***********************************************************************************************************************************************************************
+    private static final ResourceBundle translate = ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal", Locales.getInstance().getLangCurrent());
+
+    private static String loc(String key) {
+        return translate.getString(key);
+    }
+
     public String getTextInfo(IPatientController pc) {
         return "<span style='font-size:16.0pt;color:red'>"
                 + "&nbsp;№" + getId()
                 + "<br>&nbsp;"
                 + getName()
                 + "<br>&nbsp;"
-                + "последний визит "
+                + loc("last_visit_date") + " "
                 + Uses.format_dd_MM_yyyy.format(getLastVisit())
                 + "<br> </span><span style='font-size:12.0pt;color:black'>"
                 + pc.getTextView(this);

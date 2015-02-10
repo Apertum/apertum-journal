@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
@@ -65,7 +66,7 @@ public class FJournal extends javax.swing.JFrame {
     
     private static final ResourceBundle translate = ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal", Locales.getInstance().getLangCurrent());
 
-    private String locMes(String key) {
+    private static String loc(String key) {
         return translate.getString(key);
     }
 
@@ -80,7 +81,7 @@ public class FJournal extends javax.swing.JFrame {
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
                 JComponent.WHEN_IN_FOCUSED_WINDOW);
         try {
-            this.setIconImage(ImageIO.read(FJournal.class.getResource("/ru/apertum/journal/forms/resources/favicon.png")));
+            this.setIconImage(ImageIO.read(FJournal.class.getResource("/ru/apertum/journal/forms/resources/favicon.png"))); //NOI18N
         } catch (IOException ex) {
             System.err.println(ex);
         }
@@ -154,7 +155,7 @@ public class FJournal extends javax.swing.JFrame {
             bg.add(item);
             item.setSelected(lng.equals(currLng));
             item.setText(lng); // NOI18N
-            item.setName("QRadioButtonMenuItem" + (ii++)); // NOI18N
+            item.setName("QRadioButtonMenuItem" + (ii++)); // NOI18N //NOI18N
             menuLangs.add(item);
         }
     }
@@ -172,7 +173,7 @@ public class FJournal extends javax.swing.JFrame {
         @Override
         public boolean include(RowFilter.Entry entry) {
             if (!textFieldFilterSecondName.getText().isEmpty()) {
-                return ((String) entry.getValue(1)).toUpperCase().startsWith(" " + textFieldFilterSecondName.getText().toUpperCase());
+                return ((String) entry.getValue(1)).toUpperCase().startsWith(" " + textFieldFilterSecondName.getText().toUpperCase()); //NOI18N
             }
             if ((Long) spinnerFilterKarta.getModel().getValue() != 0) {
                 return (((Long) entry.getValue(0)).equals((Long) spinnerFilterKarta.getModel().getValue()));
@@ -287,14 +288,14 @@ public class FJournal extends javax.swing.JFrame {
         buttonClearFilter = new javax.swing.JButton();
         spinnerFilterKarta = new javax.swing.JSpinner();
         dateFilterLastVisit = new com.toedter.calendar.JDateChooser();
-        dateFilterBirthday = new com.toedter.calendar.JDateChooser();
         textFieldFilterAttachedNAME = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        dateFilterBirthday = new com.toedter.calendar.JDateChooser();
         panelPatientsButtons = new javax.swing.JPanel();
-        buttonEditPatient = new javax.swing.JButton();
         buttonAddPatient = new javax.swing.JButton();
         buttonRemoveParient = new javax.swing.JButton();
         buttonRefresh = new javax.swing.JButton();
+        buttonEditPatient = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablePatients = new javax.swing.JTable();
         panelPatientArea = new javax.swing.JPanel();
@@ -303,16 +304,16 @@ public class FJournal extends javax.swing.JFrame {
         buttonAddNewVisit = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableVisits = new javax.swing.JTable();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        labelPatientInfo = new javax.swing.JLabel();
         labelVisitsCaption = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        labelPatientInfo = new javax.swing.JTextPane();
         menuBarJournal = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         menuLangs = new javax.swing.JMenu();
         miExit = new javax.swing.JMenuItem();
 
-        jMenuItemNewPoc.setText("Новый пациент");
-        jMenuItemNewPoc.setToolTipText("");
+        jMenuItemNewPoc.setText(translate.getString("new_patient")); // NOI18N
+        jMenuItemNewPoc.setToolTipText("null");
         jMenuItemNewPoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemNewPocActionPerformed(evt);
@@ -320,8 +321,8 @@ public class FJournal extends javax.swing.JFrame {
         });
         popupMenuPatients.add(jMenuItemNewPoc);
 
-        jMenuItemEditPoc.setText("Редактировать");
-        jMenuItemEditPoc.setToolTipText("");
+        jMenuItemEditPoc.setText(translate.getString("edit_client")); // NOI18N
+        jMenuItemEditPoc.setToolTipText("null");
         jMenuItemEditPoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemEditPocActionPerformed(evt);
@@ -330,8 +331,8 @@ public class FJournal extends javax.swing.JFrame {
         popupMenuPatients.add(jMenuItemEditPoc);
         popupMenuPatients.add(jSeparator1);
 
-        jMenuItemRemovePoc.setText("Удалить пациента");
-        jMenuItemRemovePoc.setToolTipText("");
+        jMenuItemRemovePoc.setText(translate.getString("remove_patient")); // NOI18N
+        jMenuItemRemovePoc.setToolTipText("null");
         jMenuItemRemovePoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemRemovePocActionPerformed(evt);
@@ -339,7 +340,7 @@ public class FJournal extends javax.swing.JFrame {
         });
         popupMenuPatients.add(jMenuItemRemovePoc);
 
-        jMenuItemShowVisit.setText("Посмотреть обращение");
+        jMenuItemShowVisit.setText(translate.getString("show_visit")); // NOI18N
         jMenuItemShowVisit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemShowVisitActionPerformed(evt);
@@ -347,8 +348,8 @@ public class FJournal extends javax.swing.JFrame {
         });
         popupMenuVisits.add(jMenuItemShowVisit);
 
-        jMenuItemNewVisit.setText("Новое посещение");
-        jMenuItemNewVisit.setToolTipText("");
+        jMenuItemNewVisit.setText(translate.getString("new_visit")); // NOI18N
+        jMenuItemNewVisit.setToolTipText("null");
         jMenuItemNewVisit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemNewVisitActionPerformed(evt);
@@ -365,7 +366,7 @@ public class FJournal extends javax.swing.JFrame {
 
         panelFilter.setBorder(javax.swing.BorderFactory.createTitledBorder("Фильтр списка посетителей"));
 
-        jLabel1.setText("№ карточки");
+        jLabel1.setText(translate.getString("nom_case")); // NOI18N
 
         textFieldFilterSecondName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -373,20 +374,20 @@ public class FJournal extends javax.swing.JFrame {
             }
         });
 
-        label1.setText("Фамилия");
+        label1.setText(translate.getString("sourname")); // NOI18N
 
-        label3.setText("Дата рождения");
+        label3.setText(translate.getString("birthday")); // NOI18N
 
-        jLabel4.setText("Дата последнего обращения");
+        jLabel4.setText(translate.getString("last_visit_date")); // NOI18N
 
-        buttonApplyFilter.setText("Искать");
+        buttonApplyFilter.setText(translate.getString("search")); // NOI18N
         buttonApplyFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonApplyFilterActionPerformed(evt);
             }
         });
 
-        buttonClearFilter.setText("Отчистить");
+        buttonClearFilter.setText(translate.getString("clear")); // NOI18N
         buttonClearFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonClearFilterActionPerformed(evt);
@@ -397,9 +398,9 @@ public class FJournal extends javax.swing.JFrame {
 
         dateFilterLastVisit.setDate(null);
 
-        dateFilterBirthday.setDate(null);
+        jLabel2.setText(translate.getString("attached_name")); // NOI18N
 
-        jLabel2.setText("Наименование вложения");
+        dateFilterBirthday.setDate(null);
 
         javax.swing.GroupLayout panelFilterLayout = new javax.swing.GroupLayout(panelFilter);
         panelFilter.setLayout(panelFilterLayout);
@@ -407,31 +408,28 @@ public class FJournal extends javax.swing.JFrame {
             panelFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelFilterLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(panelFilterLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spinnerFilterKarta, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(label1))
                     .addGroup(panelFilterLayout.createSequentialGroup()
                         .addGroup(panelFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(label3)
-                            .addComponent(jLabel1)
-                            .addComponent(label1))
-                        .addGap(10, 10, 10)
-                        .addGroup(panelFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelFilterLayout.createSequentialGroup()
-                                .addGroup(panelFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(panelFilterLayout.createSequentialGroup()
-                                        .addComponent(spinnerFilterKarta, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel4))
-                                    .addComponent(dateFilterBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(dateFilterLastVisit, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(panelFilterLayout.createSequentialGroup()
-                                .addComponent(textFieldFilterSecondName, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(textFieldFilterAttachedNAME))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFilterLayout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addComponent(label3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(dateFilterLastVisit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(dateFilterBirthday, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textFieldFilterSecondName)
+                    .addComponent(textFieldFilterAttachedNAME)
+                    .addGroup(panelFilterLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(buttonClearFilter)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -444,19 +442,21 @@ public class FJournal extends javax.swing.JFrame {
                 .addGroup(panelFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(spinnerFilterKarta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(spinnerFilterKarta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(textFieldFilterSecondName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(label1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(textFieldFilterAttachedNAME, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2)
                         .addComponent(jLabel4))
                     .addComponent(dateFilterLastVisit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(label1)
-                    .addComponent(textFieldFilterSecondName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textFieldFilterAttachedNAME, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(label3)
-                    .addComponent(dateFilterBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(panelFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(dateFilterBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(label3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panelFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonApplyFilter)
@@ -466,33 +466,36 @@ public class FJournal extends javax.swing.JFrame {
 
         panelPatientsButtons.setBorder(new javax.swing.border.MatteBorder(null));
 
-        buttonEditPatient.setText("Редактировать");
-        buttonEditPatient.setToolTipText("");
-        buttonEditPatient.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonEditPatientActionPerformed(evt);
-            }
-        });
-
-        buttonAddPatient.setText("Новый посетитель");
+        buttonAddPatient.setBackground(new java.awt.Color(0, 255, 0));
+        buttonAddPatient.setText(translate.getString("new_client")); // NOI18N
         buttonAddPatient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonAddPatientActionPerformed(evt);
             }
         });
 
-        buttonRemoveParient.setText("Удалить посетителя");
-        buttonRemoveParient.setToolTipText("Удалить посетителя на всегда");
+        buttonRemoveParient.setBackground(new java.awt.Color(255, 0, 0));
+        buttonRemoveParient.setText(translate.getString("remove_client")); // NOI18N
+        buttonRemoveParient.setToolTipText(translate.getString("remobe_client_forever")); // NOI18N
         buttonRemoveParient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonRemoveParientActionPerformed(evt);
             }
         });
 
-        buttonRefresh.setText("Обновить список посетителей");
+        buttonRefresh.setText(translate.getString("refresh_clients_list")); // NOI18N
         buttonRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonRefreshActionPerformed(evt);
+            }
+        });
+
+        buttonEditPatient.setBackground(new java.awt.Color(255, 255, 0));
+        buttonEditPatient.setText(translate.getString("edit_client")); // NOI18N
+        buttonEditPatient.setToolTipText("null");
+        buttonEditPatient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEditPatientActionPerformed(evt);
             }
         });
 
@@ -503,12 +506,12 @@ public class FJournal extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPatientsButtonsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(buttonRefresh)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
-                .addComponent(buttonRemoveParient)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addComponent(buttonRemoveParient, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(buttonAddPatient)
+                .addComponent(buttonEditPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonEditPatient)
+                .addComponent(buttonAddPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         panelPatientsButtonsLayout.setVerticalGroup(
@@ -516,10 +519,10 @@ public class FJournal extends javax.swing.JFrame {
             .addGroup(panelPatientsButtonsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelPatientsButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonEditPatient)
                     .addComponent(buttonAddPatient)
                     .addComponent(buttonRemoveParient)
-                    .addComponent(buttonRefresh))
+                    .addComponent(buttonRefresh)
+                    .addComponent(buttonEditPatient))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -566,16 +569,16 @@ public class FJournal extends javax.swing.JFrame {
 
         panelPatientInfoButtons.setBorder(new javax.swing.border.MatteBorder(null));
 
-        buttonShowVisit.setText("Посмотреть визит");
-        buttonShowVisit.setToolTipText("");
+        buttonShowVisit.setText(translate.getString("show_visit")); // NOI18N
+        buttonShowVisit.setToolTipText("null");
         buttonShowVisit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonShowVisitActionPerformed(evt);
             }
         });
 
-        buttonAddNewVisit.setText("Новый визит");
-        buttonAddNewVisit.setToolTipText("");
+        buttonAddNewVisit.setText(translate.getString("new_visit")); // NOI18N
+        buttonAddNewVisit.setToolTipText("null");
         buttonAddNewVisit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonAddNewVisitActionPerformed(evt);
@@ -587,7 +590,7 @@ public class FJournal extends javax.swing.JFrame {
         panelPatientInfoButtonsLayout.setHorizontalGroup(
             panelPatientInfoButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPatientInfoButtonsLayout.createSequentialGroup()
-                .addContainerGap(161, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(buttonAddNewVisit)
                 .addGap(18, 18, 18)
                 .addComponent(buttonShowVisit)
@@ -631,36 +634,32 @@ public class FJournal extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tableVisits);
 
-        jScrollPane3.setBorder(null);
-
-        labelPatientInfo.setText("<html> <span style='font-size:20.0pt;color:red'>Нет данных"); // NOI18N
-        labelPatientInfo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        labelPatientInfo.setBorder(new javax.swing.border.MatteBorder(null));
-        jScrollPane3.setViewportView(labelPatientInfo);
-
         labelVisitsCaption.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        labelVisitsCaption.setText("Визиты");
+        labelVisitsCaption.setText(translate.getString("visits")); // NOI18N
+
+        labelPatientInfo.setEditable(false);
+        jScrollPane4.setViewportView(labelPatientInfo);
 
         javax.swing.GroupLayout panelPatientAreaLayout = new javax.swing.GroupLayout(panelPatientArea);
         panelPatientArea.setLayout(panelPatientAreaLayout);
         panelPatientAreaLayout.setHorizontalGroup(
             panelPatientAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelPatientInfoButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
             .addGroup(panelPatientAreaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelPatientAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4)
                     .addGroup(panelPatientAreaLayout.createSequentialGroup()
                         .addComponent(labelVisitsCaption)
-                        .addGap(0, 348, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelPatientAreaLayout.setVerticalGroup(
             panelPatientAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPatientAreaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelVisitsCaption)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -688,7 +687,7 @@ public class FJournal extends javax.swing.JFrame {
         menuLangs.setName("menuLangs"); // NOI18N
         jMenuFile.add(menuLangs);
 
-        miExit.setText("Выход");
+        miExit.setText(translate.getString("exit")); // NOI18N
         miExit.setToolTipText("");
         miExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -705,7 +704,7 @@ public class FJournal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1121, Short.MAX_VALUE)
+            .addGap(0, 1172, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -829,7 +828,7 @@ public class FJournal extends javax.swing.JFrame {
 
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Nimbus".equals(info.getName())) { //NOI18N
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -842,7 +841,7 @@ public class FJournal extends javax.swing.JFrame {
         //Locale.setDefault(Locales.getInstance().getLangCurrent());
         // Загрузка плагинов из папки plugins
         if (QLog.l().isPlaginable()) {
-            Uses.loadPlugins("./plugins/");
+            Uses.loadPlugins("./plugins/"); //NOI18N
         }
         /*
          // Прикрутим сервер на сокет.
@@ -898,7 +897,7 @@ public class FJournal extends javax.swing.JFrame {
                 for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                     //System.out.println(info.getName());
                     /*Metal Nimbus CDE/Motif Windows   Windows Classic  //GTK+*/
-                    if ("Windows".equals(info.getName())) {
+                    if ("Windows".equals(info.getName())) { //NOI18N
                         javax.swing.UIManager.setLookAndFeel(info.getClassName());
                         break;
                     }
@@ -930,7 +929,7 @@ public class FJournal extends javax.swing.JFrame {
             });
             tray.addItem("-", (ActionEvent e) -> {
             });
-            tray.addItem("Завершить работу", (ActionEvent e) -> {
+            tray.addItem(loc("finish_work"), (ActionEvent e) -> {
                 fj.dispose();
                 System.exit(0);
             });
@@ -990,8 +989,8 @@ public class FJournal extends javax.swing.JFrame {
             final Long id = (Long) tablePatients.getModel().getValueAt(tablePatients.getSelectedRow(), 0);
             final Patient patient = ((PatientsTableModel) tablePatients.getModel()).getPatientById(id);
             if (patient == null || JOptionPane.showConfirmDialog(this,
-                    "Пациент \"" + patient.getName() + "\" будет удален безвозвратно?",
-                    "Удаление пациента",
+                    java.text.MessageFormat.format(loc("will_remove_forever"), new Object[] {patient.getName()}),
+                    loc("removing_client"),
                     JOptionPane.YES_NO_OPTION) == 1) {
                 return;
             }
@@ -1035,6 +1034,7 @@ public class FJournal extends javax.swing.JFrame {
             labelPatientInfo.setText("");
             ((VisitsTableModel) tableVisits.getModel()).update(null, null);
         } else {
+            labelPatientInfo.setContentType("text/html");
             labelPatientInfo.setText("<html>" + patient.getTextInfo(PatientBlank.getInstance()));
             ((VisitsTableModel) tableVisits.getModel()).update(patient, patient.getVisits());
         }
@@ -1052,8 +1052,8 @@ public class FJournal extends javax.swing.JFrame {
             Visit visit = ((VisitsTableModel) tableVisits.getModel()).getVisitByDate(new Date());
             if (visit == null) {
                 if (JOptionPane.showConfirmDialog(this,
-                        "Будет создано новое посещение для пациента \"" + patient.getName() + "\"?",
-                        "Новое посещение",
+                        MessageFormat.format(loc("will_create_new_visit"), new Object[] {patient.getName()}),
+                        loc("new_visit"),
                         JOptionPane.YES_NO_OPTION) == 1) {
                     return;
                 }
@@ -1063,8 +1063,8 @@ public class FJournal extends javax.swing.JFrame {
                     Patient.savePatient(patient);
                 } catch (ClientException ex) {
                     JOptionPane.showMessageDialog(this,
-                            "Ошибка создания посещения.",
-                            "Сохранение посещения",
+                            loc("error_creating_visit"),
+                            loc("save_visit"),
                             JOptionPane.ERROR_MESSAGE);
                     return;
                 }
@@ -1182,11 +1182,11 @@ public class FJournal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemShowVisit;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JLabel label1;
     private javax.swing.JLabel label3;
-    private javax.swing.JLabel labelPatientInfo;
+    private javax.swing.JTextPane labelPatientInfo;
     private javax.swing.JLabel labelVisitsCaption;
     public javax.swing.JPanel mainPanel;
     public javax.swing.JMenuBar menuBarJournal;

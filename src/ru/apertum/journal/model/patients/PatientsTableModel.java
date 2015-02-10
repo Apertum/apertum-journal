@@ -19,9 +19,11 @@ package ru.apertum.journal.model.patients;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.ResourceBundle;
 import javax.swing.table.AbstractTableModel;
 import ru.apertum.journal.model.Patient;
 import ru.apertum.journal.model.PatientBlank;
+import ru.apertum.qsystem.client.Locales;
 
 /**
  * Модель таблици пациентов.
@@ -29,6 +31,12 @@ import ru.apertum.journal.model.PatientBlank;
  * @author Evgeniy Egorov, Aperum Projects
  */
 public class PatientsTableModel extends AbstractTableModel {
+
+    private static final ResourceBundle translate = ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal", Locales.getInstance().getLangCurrent());
+
+    private static String l(String key) {
+        return translate.getString(key);
+    }
 
     public PatientsTableModel() {
         patients = Patient.getPatients(null);
@@ -122,7 +130,7 @@ public class PatientsTableModel extends AbstractTableModel {
                 case 3:
                     return PatientBlank.getInstance().caption3();
                 case 4:
-                    return "Последний визит";
+                    return l("last_visit");
                 default:
                     throw new AssertionError();
             }

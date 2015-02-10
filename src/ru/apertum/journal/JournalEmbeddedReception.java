@@ -22,10 +22,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import ru.apertum.journal.forms.FJournal;
-import ru.apertum.qsystem.client.forms.FClient;
 import ru.apertum.qsystem.client.forms.FReception;
 import ru.apertum.qsystem.common.QLog;
 import ru.apertum.qsystem.common.exceptions.ServerException;
@@ -94,7 +92,7 @@ public class JournalEmbeddedReception implements IStartReception {
 
     @Override
     public String getDescription() {
-        return "Встроенное использование журнала для администратора зала.";
+        return "Embedded mode of Journal CRM for receptionist.";
     }
 
     @Override

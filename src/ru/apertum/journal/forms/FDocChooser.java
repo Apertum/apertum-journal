@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Evgeniy Egorov
+ * Copyright (C) 2015 Evgeniy Egorov
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,12 +19,14 @@ package ru.apertum.journal.forms;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import ru.apertum.journal.IDocController;
 import ru.apertum.journal.model.DocControllersList;
 import ru.apertum.journal.model.DocsTableModel;
+import ru.apertum.qsystem.client.Locales;
 import ru.apertum.qsystem.common.QLog;
 import ru.apertum.qsystem.common.Uses;
 
@@ -57,8 +59,6 @@ public class FDocChooser extends javax.swing.JDialog {
             System.err.println(ex);
         }
 
-        table.setModel(new DocsTableModel());
-        
         table.getColumnModel().getColumn(0).setMaxWidth(50);
         table.getColumnModel().getColumn(0).setPreferredWidth(50);
         table.getColumnModel().getColumn(0).setMaxWidth(1000);
@@ -72,6 +72,7 @@ public class FDocChooser extends javax.swing.JDialog {
      * Используемая ссылка на диалоговое окно.
      */
     private static FDocChooser docShooser;
+    private static final ResourceBundle trn = ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal", Locales.getInstance().getLangCurrent());
 
     public static IDocController getDocument(String title, java.awt.Frame parent, boolean modal) {
         QLog.l().logger().info("Выбор документа.");
@@ -105,24 +106,17 @@ public class FDocChooser extends javax.swing.JDialog {
         table = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ru.apertum.qsystem.QSystem.class).getContext().getResourceMap(FDocChooser.class);
-        setTitle(resourceMap.getString("Form.title")); // NOI18N
-        setModal(true);
-        setName("Form"); // NOI18N
 
         jPanel1.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel1.setName("jPanel1"); // NOI18N
 
-        buttonOK.setText(resourceMap.getString("buttonOK.text")); // NOI18N
-        buttonOK.setName("buttonOK"); // NOI18N
+        buttonOK.setText(trn.getString("ok")); // NOI18N
         buttonOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonOKActionPerformed(evt);
             }
         });
 
-        buttonCancel.setText(resourceMap.getString("buttonCancel.text")); // NOI18N
-        buttonCancel.setName("buttonCancel"); // NOI18N
+        buttonCancel.setText(trn.getString("cancel")); // NOI18N
         buttonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonCancelActionPerformed(evt);
@@ -150,26 +144,7 @@ public class FDocChooser extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jScrollPane1.setName("jScrollPane1"); // NOI18N
-
-        table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        table.setName("table"); // NOI18N
-        table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        table.setModel(new DocsTableModel());
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableMouseClicked(evt);
@@ -181,13 +156,13 @@ public class FDocChooser extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 821, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 627, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -195,15 +170,15 @@ public class FDocChooser extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
-        ok = true;
-        docShooser.setVisible(false);
-    }//GEN-LAST:event_buttonOKActionPerformed
-
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
         ok = false;
         docShooser.setVisible(false);
     }//GEN-LAST:event_buttonCancelActionPerformed
+
+    private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
+        ok = true;
+        docShooser.setVisible(false);
+    }//GEN-LAST:event_buttonOKActionPerformed
 
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
         if (evt.getClickCount() > 1) {

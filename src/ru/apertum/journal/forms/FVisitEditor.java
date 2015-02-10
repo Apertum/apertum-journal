@@ -1,18 +1,18 @@
 /*
- *  Copyright (C) 2015 Apertum{Projects}. web: http://apertum.ru Е-mail:  info@apertum.ru
- * 
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- * 
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- * 
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2015 Evgeniy Egorov
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package ru.apertum.journal.forms;
 
@@ -25,6 +25,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -34,7 +35,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.TableModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
-import org.jdesktop.application.Action;
 import ru.apertum.journal.IDocController;
 import ru.apertum.journal.model.Attached;
 import ru.apertum.journal.model.DocControllersList;
@@ -47,17 +47,23 @@ import ru.apertum.journal.model.exam.DocsTreeModel;
 import ru.apertum.journal.model.exam.RootNodeDoc;
 import ru.apertum.journal.model.patients.AttachedTableModel;
 import ru.apertum.journal.model.patients.VisitsTableModel;
+import ru.apertum.qsystem.client.Locales;
 import ru.apertum.qsystem.common.QLog;
 import ru.apertum.qsystem.common.Uses;
 import ru.apertum.qsystem.common.exceptions.ClientException;
 
 /**
- * Форма отображения информации по конкретному посещению. Имеет возможность переключения на следующее/предыдущее посещение или на произвольное.
  *
- * @author Evgeniy Egorov, Aperum Projects
+ * @author Evgeniy Egorov
  */
 public class FVisitEditor extends javax.swing.JFrame {
-
+    
+    private static final ResourceBundle trn = ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal", Locales.getInstance().getLangCurrent());
+    
+    private static String l(String key) {
+        return trn.getString(key);
+    }
+    
     private Visit visit = null;
 
     /**
@@ -70,8 +76,8 @@ public class FVisitEditor extends javax.swing.JFrame {
         // свернем по esc
         getRootPane().registerKeyboardAction((ActionEvent e) -> {
             if (isChangedVisit() && JOptionPane.showConfirmDialog(null,
-                    "Данные по посещению были изменены. Сохранить изменения?",
-                    "Сохранение посещения",
+                    trn.getString("visit_changed"),
+                    trn.getString("saving_visit"),
                     JOptionPane.YES_NO_OPTION) == 0) {
                 saveVisit();
             } else {
@@ -91,7 +97,7 @@ public class FVisitEditor extends javax.swing.JFrame {
         attachedTable.getColumnModel().getColumn(0).setMaxWidth(50);
         attachedTable.getColumnModel().getColumn(0).setPreferredWidth(50);
         attachedTable.getColumnModel().getColumn(0).setMaxWidth(1000);
-
+        
         tablePatientVisits.setModel(tModel);
         tablePatientVisits.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
             if (tablePatientVisits.getModel().getRowCount() != 0 && e.getFirstIndex() >= 0 && e.getLastIndex() >= 0 && tablePatientVisits.getSelectedRow() >= 0) {
@@ -101,7 +107,12 @@ public class FVisitEditor extends javax.swing.JFrame {
             }
         });
         selectByVisit(visit);
-
+        
+        tablePatientVisits.getColumnModel().getColumn(0).setPreferredWidth(10);
+        tablePatientVisits.getColumnModel().getColumn(0).setWidth(10);
+        tablePatientVisits.getColumnModel().getColumn(0).setMaxWidth(50);
+        tablePatientVisits.getColumnModel().getColumn(0).setPreferredWidth(50);
+        tablePatientVisits.getColumnModel().getColumn(0).setMaxWidth(1000);
     }
 
     /**
@@ -113,20 +124,22 @@ public class FVisitEditor extends javax.swing.JFrame {
     private void showData(Visit visit) {
         QLog.l().logger().trace("Посмотрим визит \"" + visit.toString());
         if (this.visit != null && isChangedVisit() && JOptionPane.showConfirmDialog(this,
-                "Данные о визите были изменены. Сохранить изменения?",
-                "Сохранение визита",
+                trn.getString("visit_changed"),
+                trn.getString("saving_visit"),
                 JOptionPane.YES_NO_OPTION) == 0) {
             saveVisit();
             return;
         }
         this.visit = visit;
+        setTitle(visit.toString());
         final boolean isNow = isNow(visit.getDate());
+        labelPatientInfo.setContentType("text/html");
         labelPatientInfo.setText("<html>" + visit.getPatient().getTextInfo(PatientBlank.getInstance()));
         textFieldVisitDescription.setText(visit.getComments());
-        labelVisitDate.setText("Дата визита " + Uses.format_dd_MM_yyyy.format(visit.getDate()));
+        labelVisitDate.setText(l("visit_date") + " " + Uses.format_dd_MM_yyyy.format(visit.getDate()));
         final GregorianCalendar gc = new GregorianCalendar();
         gc.setTime(visit.getPatient().getBirthday());
-        labelAgeOnDate.setText("Полных лет на дату посещения " + visit.getPatient().getAgeOnDate(visit.getDate()));
+        labelAgeOnDate.setText(l("age_on_visit") + " " + visit.getPatient().getAgeOnDate(visit.getDate()));
         textFieldKod.setText(visit.getKod());
         spinnerWeightOnData.getModel().setValue(visit.getWeight());
         textAreaCommonStatus.setText(visit.getCommonStatus());
@@ -143,23 +156,23 @@ public class FVisitEditor extends javax.swing.JFrame {
         textAreaCommonStatus.setEditable(isNow);
         textAreaLeftLeg.setEditable(isNow);
         textAreaRightLeg.setEditable(isNow);
-
+        
         treeExams.setModel(new DocsTreeModel(visit));
-
-        org.jdesktop.application.Application.getInstance(ru.apertum.qsystem.QSystem.class).getContext().getActionMap(FVisitEditor.class, this).get("saveVisit").setEnabled(isNow);
-
-        org.jdesktop.application.Application.getInstance(ru.apertum.qsystem.QSystem.class).getContext().getActionMap(FVisitEditor.class, this).get("createNewExam").setEnabled(isNow);
-        org.jdesktop.application.Application.getInstance(ru.apertum.qsystem.QSystem.class).getContext().getActionMap(FVisitEditor.class, this).get("removeExam").setEnabled(isNow);
-
+        
+        buttonSave.setEnabled(isNow);
+        buttonAddExam.setEnabled(isNow);
+        buttonRemoveExam.setEnabled(isNow);
+        
         btnAddAttached.setEnabled(isNow);
         btnRemoveAttached.setEnabled(isNow);
-
+        
         buttonNextVisit.setEnabled(getVisitCloseOf(visit, true) != null);
         buttonPreviousVisit.setEnabled(getVisitCloseOf(visit, false) != null);
 
         //таблица приложений
-        ((AttachedTableModel) (attachedTable.getModel())).update(visit.getAttached());
-
+        ((AttachedTableModel) attachedTable.getModel()).update(visit.getAttached());
+        ((AttachedTableModel) attachedTable.getModel()).fireTableDataChanged();
+        
     }
 
     /**
@@ -187,7 +200,7 @@ public class FVisitEditor extends javax.swing.JFrame {
         return (gc1.get(GregorianCalendar.DAY_OF_YEAR) == gc2.get(GregorianCalendar.DAY_OF_YEAR)
                 && gc1.get(GregorianCalendar.YEAR) == gc2.get(GregorianCalendar.YEAR));
     }
-
+    
     private boolean isChangedVisit() {
         final boolean isNow = isNow(visit.getDate());
         return isNow
@@ -208,28 +221,21 @@ public class FVisitEditor extends javax.swing.JFrame {
     private void initComponents() {
 
         jSplitPane1 = new javax.swing.JSplitPane();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        labelPatientInfo = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tablePatientVisits = new javax.swing.JTable();
-        jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        buttonSave = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        labelVisitDate = new javax.swing.JLabel();
         labelAgeOnDate = new javax.swing.JLabel();
         spinnerWeightOnData = new javax.swing.JSpinner();
         jLabel3 = new javax.swing.JLabel();
-        labelVisitDate = new javax.swing.JLabel();
+        textFieldVisitDescription = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
         textFieldKod = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        textFieldVisitDescription = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
-        buttonNextVisit = new javax.swing.JButton();
-        buttonPreviousVisit = new javax.swing.JButton();
-        buttonSave = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel6 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
         jSplitPane2 = new javax.swing.JSplitPane();
         jSplitPane3 = new javax.swing.JSplitPane();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -238,363 +244,172 @@ public class FVisitEditor extends javax.swing.JFrame {
         textAreaRightLeg = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         textAreaCommonStatus = new javax.swing.JTextArea();
-        jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
-        buttonAddExam = new javax.swing.JButton();
-        buttonRemoveExam = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jScrollPane6 = new javax.swing.JScrollPane();
+        jScrollPane7 = new javax.swing.JScrollPane();
         treeExams = new javax.swing.JTree();
-        jPanel9 = new javax.swing.JPanel();
+        jPanel11 = new javax.swing.JPanel();
+        buttonAddExam = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        buttonRemoveExam = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
-        btnRemoveAttached = new javax.swing.JButton();
+        jPanel12 = new javax.swing.JPanel();
         btnAddAttached = new javax.swing.JButton();
         btnEditAttached = new javax.swing.JButton();
+        btnRemoveAttached = new javax.swing.JButton();
         btnDownloadAttached = new javax.swing.JButton();
-        jScrollPane8 = new javax.swing.JScrollPane();
+        jScrollPane6 = new javax.swing.JScrollPane();
         attachedTable = new javax.swing.JTable();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        buttonNextVisit = new javax.swing.JButton();
+        buttonPreviousVisit = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablePatientVisits = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        labelPatientInfo = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ru.apertum.qsystem.QSystem.class).getContext().getResourceMap(FVisitEditor.class);
-        setTitle(resourceMap.getString("Form.title")); // NOI18N
-        setName("Form"); // NOI18N
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
-        });
 
-        jSplitPane1.setDividerLocation(505);
+        jSplitPane1.setDividerLocation(650);
         jSplitPane1.setDividerSize(7);
         jSplitPane1.setContinuousLayout(true);
-        jSplitPane1.setName("jSplitPane1"); // NOI18N
 
-        jPanel1.setName("jPanel1"); // NOI18N
+        jPanel1.setBorder(new javax.swing.border.MatteBorder(null));
 
-        jScrollPane1.setBorder(new javax.swing.border.MatteBorder(null));
-        jScrollPane1.setName("jScrollPane1"); // NOI18N
-
-        labelPatientInfo.setText(resourceMap.getString("labelPatientInfo.text")); // NOI18N
-        labelPatientInfo.setToolTipText(resourceMap.getString("labelPatientInfo.toolTipText")); // NOI18N
-        labelPatientInfo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        labelPatientInfo.setName("labelPatientInfo"); // NOI18N
-        jScrollPane1.setViewportView(labelPatientInfo);
-
-        jPanel2.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel2.setName("jPanel2"); // NOI18N
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 408, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 45, Short.MAX_VALUE)
-        );
-
-        jScrollPane2.setName("jScrollPane2"); // NOI18N
-
-        tablePatientVisits.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {"1", "20.05.2004", "Общее направление"},
-                {"2", "14.06.2004", "Повторное обследование"},
-                {"3", "13.12.10", "Профилактика"},
-                {null, null, null}
-            },
-            new String [] {
-                "№", "Дата", "Описание"
+        buttonSave.setText(trn.getString("save_changes")); // NOI18N
+        buttonSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSaveActionPerformed(evt);
             }
-        ));
-        tablePatientVisits.setName("tablePatientVisits"); // NOI18N
-        tablePatientVisits.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane2.setViewportView(tablePatientVisits);
-        if (tablePatientVisits.getColumnModel().getColumnCount() > 0) {
-            tablePatientVisits.getColumnModel().getColumn(0).setPreferredWidth(15);
-            tablePatientVisits.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("tablePatientVisits.columnModel.title0")); // NOI18N
-            tablePatientVisits.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("tablePatientVisits.columnModel.title1")); // NOI18N
-            tablePatientVisits.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("tablePatientVisits.columnModel.title2")); // NOI18N
-        }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(buttonSave)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(buttonSave)
+                .addContainerGap())
         );
 
-        jSplitPane1.setRightComponent(jPanel1);
+        jPanel2.setBorder(new javax.swing.border.MatteBorder(null));
 
-        jPanel3.setName("jPanel3"); // NOI18N
+        labelVisitDate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        labelVisitDate.setText("Дата посещения 13.12.10");
 
-        jPanel4.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel4.setName("jPanel4"); // NOI18N
+        labelAgeOnDate.setText("Полных лет на дату посещения 91");
 
-        labelAgeOnDate.setText(resourceMap.getString("labelAgeOnDate.text")); // NOI18N
-        labelAgeOnDate.setName("labelAgeOnDate"); // NOI18N
+        jLabel3.setText(trn.getString("param_on_visit")); // NOI18N
 
-        spinnerWeightOnData.setModel(new javax.swing.SpinnerNumberModel(75, 3, 475, 1));
-        spinnerWeightOnData.setName("spinnerWeightOnData"); // NOI18N
+        jLabel4.setText(trn.getString("description")); // NOI18N
 
-        jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
-        jLabel3.setName("jLabel3"); // NOI18N
+        jLabel5.setText(trn.getString("code")); // NOI18N
 
-        labelVisitDate.setFont(resourceMap.getFont("labelVisitDate.font")); // NOI18N
-        labelVisitDate.setText(resourceMap.getString("labelVisitDate.text")); // NOI18N
-        labelVisitDate.setName("labelVisitDate"); // NOI18N
-
-        textFieldKod.setText(resourceMap.getString("textFieldKod.text")); // NOI18N
-        textFieldKod.setName("textFieldKod"); // NOI18N
-
-        jLabel5.setText(resourceMap.getString("jLabel5.text")); // NOI18N
-        jLabel5.setName("jLabel5"); // NOI18N
-
-        textFieldVisitDescription.setText(resourceMap.getString("textFieldVisitDescription.text")); // NOI18N
-        textFieldVisitDescription.setName("textFieldVisitDescription"); // NOI18N
-
-        jLabel6.setText(resourceMap.getString("jLabel6.text")); // NOI18N
-        jLabel6.setName("jLabel6"); // NOI18N
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelVisitDate)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textFieldVisitDescription))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelVisitDate)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(spinnerWeightOnData, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(labelAgeOnDate)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(textFieldKod, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(spinnerWeightOnData, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addComponent(textFieldVisitDescription)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textFieldKod, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelVisitDate)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelAgeOnDate)
                     .addComponent(textFieldKod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(spinnerWeightOnData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(spinnerWeightOnData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(textFieldVisitDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
+                    .addComponent(jLabel4))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel5.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel5.setName("jPanel5"); // NOI18N
-
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ru.apertum.qsystem.QSystem.class).getContext().getActionMap(FVisitEditor.class, this);
-        buttonNextVisit.setAction(actionMap.get("nextVisit")); // NOI18N
-        buttonNextVisit.setName("buttonNextVisit"); // NOI18N
-
-        buttonPreviousVisit.setAction(actionMap.get("previousVisit")); // NOI18N
-        buttonPreviousVisit.setName("buttonPreviousVisit"); // NOI18N
-
-        buttonSave.setAction(actionMap.get("saveVisit")); // NOI18N
-        buttonSave.setBackground(resourceMap.getColor("buttonSave.background")); // NOI18N
-        buttonSave.setName("buttonSave"); // NOI18N
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(buttonPreviousVisit)
-                .addGap(18, 18, 18)
-                .addComponent(buttonSave)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(buttonNextVisit)
-                .addContainerGap())
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonNextVisit)
-                    .addComponent(buttonPreviousVisit)
-                    .addComponent(buttonSave))
-                .addContainerGap())
-        );
-
-        jTabbedPane1.setName("jTabbedPane1"); // NOI18N
-
-        jPanel6.setName("jPanel6"); // NOI18N
+        jPanel3.setBorder(new javax.swing.border.MatteBorder(null));
 
         jSplitPane2.setDividerLocation(100);
         jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jSplitPane2.setContinuousLayout(true);
-        jSplitPane2.setName("jSplitPane2"); // NOI18N
 
-        jSplitPane3.setDividerLocation(90);
+        jSplitPane3.setDividerLocation(100);
         jSplitPane3.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jSplitPane3.setContinuousLayout(true);
-        jSplitPane3.setName("jSplitPane3"); // NOI18N
-
-        jScrollPane4.setName("jScrollPane4"); // NOI18N
 
         textAreaLeftLeg.setColumns(20);
-        textAreaLeftLeg.setFont(resourceMap.getFont("textAreaLeftLeg.font")); // NOI18N
-        textAreaLeftLeg.setRows(5);
-        textAreaLeftLeg.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("textAreaLeftLeg.border.title"))); // NOI18N
-        textAreaLeftLeg.setName("textAreaLeftLeg"); // NOI18N
+        textAreaLeftLeg.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        textAreaLeftLeg.setRows(1);
+        textAreaLeftLeg.setBorder(javax.swing.BorderFactory.createTitledBorder(trn.getString("purpose_visit")));
         jScrollPane4.setViewportView(textAreaLeftLeg);
 
         jSplitPane3.setTopComponent(jScrollPane4);
 
-        jScrollPane5.setName("jScrollPane5"); // NOI18N
-
         textAreaRightLeg.setColumns(20);
-        textAreaRightLeg.setFont(resourceMap.getFont("textAreaRightLeg.font")); // NOI18N
-        textAreaRightLeg.setRows(5);
-        textAreaRightLeg.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("textAreaRightLeg.border.title"))); // NOI18N
-        textAreaRightLeg.setName("textAreaRightLeg"); // NOI18N
+        textAreaRightLeg.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        textAreaRightLeg.setRows(1);
+        textAreaRightLeg.setBorder(javax.swing.BorderFactory.createTitledBorder(trn.getString("comments")));
         jScrollPane5.setViewportView(textAreaRightLeg);
 
         jSplitPane3.setRightComponent(jScrollPane5);
 
         jSplitPane2.setBottomComponent(jSplitPane3);
 
-        jScrollPane3.setName("jScrollPane3"); // NOI18N
-
         textAreaCommonStatus.setColumns(20);
-        textAreaCommonStatus.setFont(resourceMap.getFont("textAreaCommonStatus.font")); // NOI18N
-        textAreaCommonStatus.setRows(5);
-        textAreaCommonStatus.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("textAreaCommonStatus.border.title"))); // NOI18N
-        textAreaCommonStatus.setName("textAreaCommonStatus"); // NOI18N
+        textAreaCommonStatus.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        textAreaCommonStatus.setRows(1);
+        textAreaCommonStatus.setBorder(javax.swing.BorderFactory.createTitledBorder(trn.getString("resons_visit")));
         jScrollPane3.setViewportView(textAreaCommonStatus);
 
         jSplitPane2.setLeftComponent(jScrollPane3);
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 475, Short.MAX_VALUE)
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab(resourceMap.getString("jPanel6.TabConstraints.tabTitle"), jPanel6); // NOI18N
-
-        jPanel7.setName("jPanel7"); // NOI18N
-
-        jPanel8.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel8.setName("jPanel8"); // NOI18N
-
-        buttonAddExam.setAction(actionMap.get("createNewExam")); // NOI18N
-        buttonAddExam.setText(resourceMap.getString("buttonAddExam.text")); // NOI18N
-        buttonAddExam.setName("buttonAddExam"); // NOI18N
-
-        buttonRemoveExam.setAction(actionMap.get("removeExam")); // NOI18N
-        buttonRemoveExam.setText(resourceMap.getString("buttonRemoveExam.text")); // NOI18N
-        buttonRemoveExam.setName("buttonRemoveExam"); // NOI18N
-
-        jButton1.setAction(actionMap.get("showExam")); // NOI18N
-        jButton1.setName("jButton1"); // NOI18N
-
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addContainerGap(110, Short.MAX_VALUE)
-                .addComponent(buttonRemoveExam)
-                .addGap(22, 22, 22)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonAddExam)
-                .addContainerGap())
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonAddExam)
-                    .addComponent(buttonRemoveExam)
-                    .addComponent(jButton1))
-                .addContainerGap())
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSplitPane2)
         );
 
-        jScrollPane6.setName("jScrollPane6"); // NOI18N
+        jTabbedPane1.addTab(trn.getString("visit_info"), jPanel5); // NOI18N
 
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
-        javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("В типе обови 1");
-        javax.swing.tree.DefaultMutableTreeNode treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Вкладки типа 1");
-        javax.swing.tree.DefaultMutableTreeNode treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Стоя 11:45");
-        treeNode3.add(treeNode4);
-        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Ходьба 13:45");
-        treeNode3.add(treeNode4);
-        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Бег 12:13");
-        treeNode3.add(treeNode4);
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Вкладки типа 2");
-        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Стоя 11:45");
-        treeNode3.add(treeNode4);
-        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Ходьба 13:45");
-        treeNode3.add(treeNode4);
-        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Бег 12:13");
-        treeNode3.add(treeNode4);
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("В типе обови 2");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Вкладки типа 1");
-        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Стоя 11:45");
-        treeNode3.add(treeNode4);
-        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Ходьба 13:45");
-        treeNode3.add(treeNode4);
-        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Бег 12:13");
-        treeNode3.add(treeNode4);
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Вкладки типа 2");
-        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Стоя 11:45");
-        treeNode3.add(treeNode4);
-        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Ходьба 13:45");
-        treeNode3.add(treeNode4);
-        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Бег 12:13");
-        treeNode3.add(treeNode4);
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeExams.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        treeExams.setName("treeExams"); // NOI18N
         treeExams.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 treeExamsMouseClicked(evt);
@@ -605,67 +420,107 @@ public class FVisitEditor extends javax.swing.JFrame {
                 treeExamsKeyTyped(evt);
             }
         });
-        jScrollPane6.setViewportView(treeExams);
+        jScrollPane7.setViewportView(treeExams);
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        jPanel11.setBorder(new javax.swing.border.MatteBorder(null));
 
-        jTabbedPane1.addTab(resourceMap.getString("jPanel7.TabConstraints.tabTitle"), jPanel7); // NOI18N
-
-        jPanel9.setName("jPanel9"); // NOI18N
-
-        jPanel10.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel10.setName("jPanel10"); // NOI18N
-
-        btnRemoveAttached.setText(resourceMap.getString("btnRemoveAttached.text")); // NOI18N
-        btnRemoveAttached.setName("btnRemoveAttached"); // NOI18N
-        btnRemoveAttached.addActionListener(new java.awt.event.ActionListener() {
+        buttonAddExam.setText(trn.getString("create_doc")); // NOI18N
+        buttonAddExam.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRemoveAttachedActionPerformed(evt);
+                buttonAddExamActionPerformed(evt);
             }
         });
 
-        btnAddAttached.setText(resourceMap.getString("btnAddAttached.text")); // NOI18N
-        btnAddAttached.setName("btnAddAttached"); // NOI18N
+        jButton1.setText(trn.getString("show")); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        buttonRemoveExam.setText(trn.getString("remove_doc")); // NOI18N
+        buttonRemoveExam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonRemoveExamActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
+                .addContainerGap(90, Short.MAX_VALUE)
+                .addComponent(buttonRemoveExam)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonAddExam)
+                .addContainerGap())
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonAddExam)
+                    .addComponent(jButton1)
+                    .addComponent(buttonRemoveExam))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane7)
+            .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jTabbedPane1.addTab(trn.getString("visit_created_docs"), jPanel8);
+
+        jPanel12.setBorder(new javax.swing.border.MatteBorder(null));
+
+        btnAddAttached.setText(trn.getString("add")); // NOI18N
         btnAddAttached.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddAttachedActionPerformed(evt);
             }
         });
 
-        btnEditAttached.setText(resourceMap.getString("btnEditAttached.text")); // NOI18N
-        btnEditAttached.setName("btnEditAttached"); // NOI18N
+        btnEditAttached.setText(trn.getString("change")); // NOI18N
         btnEditAttached.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditAttachedActionPerformed(evt);
             }
         });
 
-        btnDownloadAttached.setText(resourceMap.getString("btnDownloadAttached.text")); // NOI18N
-        btnDownloadAttached.setName("btnDownloadAttached"); // NOI18N
+        btnRemoveAttached.setText(trn.getString("remove")); // NOI18N
+        btnRemoveAttached.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveAttachedActionPerformed(evt);
+            }
+        });
+
+        btnDownloadAttached.setText(trn.getString("download")); // NOI18N
         btnDownloadAttached.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDownloadAttachedActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnDownloadAttached)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -676,68 +531,146 @@ public class FVisitEditor extends javax.swing.JFrame {
                 .addComponent(btnAddAttached)
                 .addContainerGap())
         );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRemoveAttached)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAddAttached)
                     .addComponent(btnEditAttached)
+                    .addComponent(btnRemoveAttached)
                     .addComponent(btnDownloadAttached))
                 .addContainerGap())
         );
 
-        jScrollPane8.setName("jScrollPane8"); // NOI18N
+        attachedTable.setModel(new AttachedTableModel());
+        jScrollPane6.setViewportView(attachedTable);
 
-        attachedTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        attachedTable.setName("attachedTable"); // NOI18N
-        attachedTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane8.setViewportView(attachedTable);
-
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 475, Short.MAX_VALUE)
         );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jTabbedPane1.addTab(resourceMap.getString("jPanel9.TabConstraints.tabTitle"), jPanel9); // NOI18N
+        jTabbedPane1.addTab(trn.getString("attachments"), jPanel10);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jTabbedPane1)
         );
 
-        jSplitPane1.setLeftComponent(jPanel3);
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jSplitPane1.setLeftComponent(jPanel4);
+
+        jPanel7.setBorder(new javax.swing.border.MatteBorder(null));
+
+        buttonNextVisit.setText(trn.getString("next_visit")); // NOI18N
+        buttonNextVisit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonNextVisitActionPerformed(evt);
+            }
+        });
+
+        buttonPreviousVisit.setText(trn.getString("pred_visit")); // NOI18N
+        buttonPreviousVisit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPreviousVisitActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(buttonPreviousVisit)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(buttonNextVisit)
+                .addContainerGap())
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonNextVisit)
+                    .addComponent(buttonPreviousVisit))
+                .addContainerGap())
+        );
+
+        tablePatientVisits.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tablePatientVisits.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(tablePatientVisits);
+
+        labelPatientInfo.setEditable(false);
+        jScrollPane2.setViewportView(labelPatientInfo);
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2)
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jSplitPane1.setRightComponent(jPanel6);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -753,20 +686,17 @@ public class FVisitEditor extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        if (isChangedVisit() && JOptionPane.showConfirmDialog(this,
-                "Данные о визите были изменены. Сохранить изменения?",
-                "Сохранение визита",
-                JOptionPane.YES_NO_OPTION) == 0) {
-            saveVisit();
-        }
-    }//GEN-LAST:event_formWindowClosing
+    private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
+        saveVisit();
+    }//GEN-LAST:event_buttonSaveActionPerformed
 
-    private void treeExamsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeExamsMouseClicked
-        if (evt.getClickCount() > 1) {
-            showExam();
-        }
-    }//GEN-LAST:event_treeExamsMouseClicked
+    private void buttonNextVisitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNextVisitActionPerformed
+        nextVisit();
+    }//GEN-LAST:event_buttonNextVisitActionPerformed
+
+    private void buttonPreviousVisitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPreviousVisitActionPerformed
+        previousVisit();
+    }//GEN-LAST:event_buttonPreviousVisitActionPerformed
 
     private void treeExamsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_treeExamsKeyTyped
         if (evt.getKeyChar() == '\n') {
@@ -774,17 +704,35 @@ public class FVisitEditor extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_treeExamsKeyTyped
 
+    private void treeExamsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeExamsMouseClicked
+        if (evt.getClickCount() > 1) {
+            showExam();
+        }
+    }//GEN-LAST:event_treeExamsMouseClicked
+
+    private void buttonAddExamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddExamActionPerformed
+        createNewExam();
+    }//GEN-LAST:event_buttonAddExamActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        showExam();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void buttonRemoveExamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoveExamActionPerformed
+        removeExam();
+    }//GEN-LAST:event_buttonRemoveExamActionPerformed
+
     private void btnAddAttachedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAttachedActionPerformed
         addNewAttahed();
     }//GEN-LAST:event_btnAddAttachedActionPerformed
 
-    private void btnRemoveAttachedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveAttachedActionPerformed
-        removeAttached();
-    }//GEN-LAST:event_btnRemoveAttachedActionPerformed
-
     private void btnEditAttachedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditAttachedActionPerformed
         editAttached();
     }//GEN-LAST:event_btnEditAttachedActionPerformed
+
+    private void btnRemoveAttachedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveAttachedActionPerformed
+        removeAttached();
+    }//GEN-LAST:event_btnRemoveAttachedActionPerformed
 
     private void btnDownloadAttachedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownloadAttachedActionPerformed
         try {
@@ -793,12 +741,10 @@ public class FVisitEditor extends javax.swing.JFrame {
             throw new RuntimeException("No blob. ", ex);
         }
     }//GEN-LAST:event_btnDownloadAttachedActionPerformed
-
-    @Action
+    
     public void showVisit() {
     }
-
-    @Action
+    
     public void nextVisit() {
         final Visit v = getVisitCloseOf(visit, true);
         if (v != null) {
@@ -806,8 +752,7 @@ public class FVisitEditor extends javax.swing.JFrame {
             selectByVisit(v);
         }
     }
-
-    @Action
+    
     public void previousVisit() {
         final Visit v = getVisitCloseOf(visit, false);
         if (v != null) {
@@ -815,7 +760,7 @@ public class FVisitEditor extends javax.swing.JFrame {
             selectByVisit(v);
         }
     }
-
+    
     private void selectByVisit(Visit v) {
         for (int i = 0; i < tablePatientVisits.getModel().getRowCount(); i++) {
             if (isSameDates((Date) tablePatientVisits.getModel().getValueAt(i, 1), v.getDate())) {
@@ -852,19 +797,18 @@ public class FVisitEditor extends javax.swing.JFrame {
         }
         return res;
     }
-
-    @Action
+    
     public void createNewExam() {
         QLog.l().logger().trace("Создадим новый документ.");
         final IDocController blanc;
         if (DocControllersList.getInstance().getSize() == 1) {
             JOptionPane.showMessageDialog(this,
-                    "Сейчас у вас доступен только один вид документа.\nРасширте список доступных видов документов добавлением плагинов.",
-                    "Выбор документа",
+                    trn.getString("only_one_doc"),
+                    trn.getString("doc_selection"),
                     JOptionPane.INFORMATION_MESSAGE);
             blanc = DocControllersList.getInstance().getElementAt(0);
         } else {
-            blanc = FDocChooser.getDocument("Выберите документ для создания", this, true);
+            blanc = FDocChooser.getDocument(trn.getString("choose_doc"), this, true);
         }
         if (blanc != null) {
             final Document doc = new Document();
@@ -886,14 +830,13 @@ public class FVisitEditor extends javax.swing.JFrame {
             }
         }
     }
-
-    @Action
+    
     public void removeExam() {
         QLog.l().logger().trace("Удалим документ.");
         final TreeNode node = (TreeNode) treeExams.getLastSelectedPathComponent();
         if (node != null && node.isLeaf() && JOptionPane.showConfirmDialog(this,
-                "Документ \"" + DocControllersList.getInstance().getById(((DocNode) node).getDoc().getDocId()).getName() + " " + node.toString() + "\" будет удален безвозвратно?",
-                "Удаление документа",
+                java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal").getString("will_doc_remove"), new Object[]{DocControllersList.getInstance().getById(((DocNode) node).getDoc().getDocId()).getName(), node.toString()}),
+                trn.getString("removing_doc"),
                 JOptionPane.YES_NO_OPTION) == 0) {
             final DocNode eNode = (DocNode) node;
             Document.removeDoc(eNode.getDoc());
@@ -906,8 +849,7 @@ public class FVisitEditor extends javax.swing.JFrame {
             treeExams.expandPath(path);
         }
     }
-
-    @Action
+    
     public void showExam() {
         QLog.l().logger().trace("Посмотрим документ.");
         final TreeNode node = (TreeNode) treeExams.getLastSelectedPathComponent();
@@ -919,12 +861,11 @@ public class FVisitEditor extends javax.swing.JFrame {
             master.setLocationRelativeTo(null);
             master.setVisible(true);
             if (master.getResult()) {
-
+                
             }
         }
     }
-
-    @Action
+    
     public final void saveVisit() {
         QLog.l().logger().info("Сохраняем посещение. " + visit.getDate());
         visit.setComments(textFieldVisitDescription.getText());
@@ -937,25 +878,25 @@ public class FVisitEditor extends javax.swing.JFrame {
             Visit.saveVisit(visit);
         } catch (ClientException ex) {
             JOptionPane.showMessageDialog(this,
-                    "Ошибка сохранения визита.",
-                    "Сохранение визита",
+                    trn.getString("error_save_visit"),
+                    trn.getString("saving_visit"),
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
         JOptionPane.showMessageDialog(this,
-                "Данные о визите были успешно сохранены",
-                "Сохранение визита",
+                trn.getString("save_visit_sucsessful"),
+                trn.getString("saving_visit"),
                 JOptionPane.INFORMATION_MESSAGE);
     }
-
+    
     public void addNewAttahed() {
-
+        
         QLog.l().logger().trace("Добавим новое вложение.");
         // если сегодня уже создали визит то его не нужно еще раз создавать, просто покажем его
 
         if (JOptionPane.showConfirmDialog(this,
-                "Будет добавлено новое вложение для посещения.",
-                "Новое вложение",
+                trn.getString("new_att_for_visit"),
+                trn.getString("new_att"),
                 JOptionPane.YES_NO_OPTION) == 1) {
             return;
         }
@@ -973,32 +914,34 @@ public class FVisitEditor extends javax.swing.JFrame {
                 Storage.saveStorage(aa.getFile(), att.getId(), null, visit.getId(), null, att.getTitle());
             } catch (ClientException ex) {
                 JOptionPane.showMessageDialog(this,
-                        "Ошибка создания пиложения.",
-                        "Сохранение приложения",
+                        trn.getString("err_create_att"),
+                        trn.getString("saving_att"),
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
+            
             ((AttachedTableModel) attachedTable.getModel()).update(visit.getAttached());
             ((AttachedTableModel) attachedTable.getModel()).fireTableDataChanged();
         } else {
-            JOptionPane.showMessageDialog(this,
-                    "Не верные параметры вложения.",
-                    "Новое вложение",
-                    JOptionPane.ERROR_MESSAGE);
+            if (aa.isOKpress()) {
+                JOptionPane.showMessageDialog(this,
+                        trn.getString("err_att_params"),
+                        trn.getString("new_att"),
+                        JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
-
+    
     public void removeAttached() {
         if (!attachedTable.getSelectionModel().isSelectionEmpty()) {
             QLog.l().logger().trace("Удалим вложение.");
             int row = attachedTable.convertRowIndexToModel(attachedTable.getSelectedRow());
             AttachedTableModel model = (AttachedTableModel) attachedTable.getModel();
-
+            
             final Attached attached = model.getRowAt(row);
             if (attached == null || JOptionPane.showConfirmDialog(this,
-                    "Вложение \"" + attached.getTitle() + "\" будет удалено безвозвратно?",
-                    "Удаление вложения",
+                    java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal").getString("will_att_remove"), new Object[]{attached.getTitle()}),
+                    trn.getString("removing_att"),
                     JOptionPane.YES_NO_OPTION) == 1) {
                 return;
             }
@@ -1010,15 +953,15 @@ public class FVisitEditor extends javax.swing.JFrame {
             Attached.removeAttached(attached);
         }
     }
-
+    
     public void editAttached() {
         if (!attachedTable.getSelectionModel().isSelectionEmpty()) {
             QLog.l().logger().trace("с вложение.");
             int row = attachedTable.convertRowIndexToModel(attachedTable.getSelectedRow());
             AttachedTableModel model = (AttachedTableModel) attachedTable.getModel();
-
+            
             final Attached attached = model.getRowAt(row);
-
+            
             QLog.l().logger().debug("Редактируем приложение \"" + attached.getTitle() + "\"");
             // удалим навсегда
             final FAttachedDlg aa = new FAttachedDlg(this, true);
@@ -1026,7 +969,7 @@ public class FVisitEditor extends javax.swing.JFrame {
             aa.setComment(attached.getComments());
             aa.setTitleDoc(attached.getTitle());
             aa.setNoFile();
-
+            
             aa.setVisible(true);
             if (aa.isOKnoFile()) {
                 attached.setTitle(aa.getTitleDoc());
@@ -1035,50 +978,50 @@ public class FVisitEditor extends javax.swing.JFrame {
                     Attached.saveAttached(attached);
                 } catch (ClientException ex) {
                     JOptionPane.showMessageDialog(this,
-                            "Ошибка создания пиложения.",
-                            "Сохранение приложения",
+                            trn.getString("err_create_att"),
+                            trn.getString("saving_att"),
                             JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-
+                
                 ((AttachedTableModel) attachedTable.getModel()).update(visit.getAttached());
                 ((AttachedTableModel) attachedTable.getModel()).fireTableDataChanged();
             }
         }
     }
-
+    
     public void downloadAttached() throws FileNotFoundException, IOException {
-
+        
         if (!attachedTable.getSelectionModel().isSelectionEmpty()) {
             QLog.l().logger().trace("Загрузим вложение.");
             int row = attachedTable.convertRowIndexToModel(attachedTable.getSelectedRow());
             AttachedTableModel model = (AttachedTableModel) attachedTable.getModel();
-
+            
             final Attached attached = model.getRowAt(row);
             if (attached == null) {
                 return;
             }
             QLog.l().logger().debug("Загрузим приложение \"" + attached.getTitle() + "\"");
-
+            
             final byte[] bb = Storage.loadStorage(attached.getId());
-
+            
             final JFileChooser fc = new JFileChooser();
-            fc.setDialogTitle("Сохранение вложения");
-            fc.setCurrentDirectory(new File("."));
+            fc.setDialogTitle(trn.getString("saving_att"));
+            fc.setCurrentDirectory(new File(trn.getString(".")));
             fc.setSelectedFile(new File(attached.getFileName()));
             if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
                 if (fc.getSelectedFile().exists() && JOptionPane.showConfirmDialog(this,
-                        "Файл \"" + fc.getSelectedFile().getName() + "\" существует. Заменить новым?",
-                        "Сохранение вложения",
+                        java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal").getString("file_exists_remove"), new Object[]{fc.getSelectedFile().getName()}),
+                        trn.getString("saving_att"),
                         JOptionPane.YES_NO_OPTION) == 1) {
                     return;
                 }
-
+                
                 try (FileOutputStream outputStream = new FileOutputStream(fc.getSelectedFile())) {
                     outputStream.write(bb);
                     outputStream.flush();
                 }
-
+                
                 final Desktop desktop = Desktop.getDesktop();
                 desktop.open(fc.getSelectedFile().getParentFile());
             }
@@ -1099,10 +1042,12 @@ public class FVisitEditor extends javax.swing.JFrame {
     private javax.swing.JButton buttonSave;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1110,20 +1055,19 @@ public class FVisitEditor extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JSplitPane jSplitPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel labelAgeOnDate;
-    private javax.swing.JLabel labelPatientInfo;
+    private javax.swing.JTextPane labelPatientInfo;
     private javax.swing.JLabel labelVisitDate;
     private javax.swing.JSpinner spinnerWeightOnData;
     private javax.swing.JTable tablePatientVisits;

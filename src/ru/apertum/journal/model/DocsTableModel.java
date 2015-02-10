@@ -16,13 +16,21 @@
  */
 package ru.apertum.journal.model;
 
+import java.util.ResourceBundle;
 import javax.swing.table.AbstractTableModel;
+import ru.apertum.qsystem.client.Locales;
 
 /**
  *
  * @author Evgeniy Egorov
  */
 public class DocsTableModel extends AbstractTableModel {
+
+    private static final ResourceBundle translate = ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal", Locales.getInstance().getLangCurrent());
+
+    private static String loc(String key) {
+        return translate.getString(key);
+    }
 
     @Override
     public int getRowCount() {
@@ -47,21 +55,21 @@ public class DocsTableModel extends AbstractTableModel {
                 throw new AssertionError();
         }
     }
-    
+
     @Override
     public String getColumnName(int column) {
         switch (column) {
             case 0:
                 return "№";
             case 1:
-                return "Документ";
+                return loc("document");
             case 2:
-                return "Описание";
+                return loc("description");
             default:
                 throw new AssertionError();
         }
     }
-    
+
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {

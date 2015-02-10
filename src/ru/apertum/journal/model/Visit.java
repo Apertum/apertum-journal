@@ -42,8 +42,8 @@ import ru.apertum.qsystem.common.Uses;
 import ru.apertum.qsystem.common.exceptions.ClientException;
 
 /**
- * Посещение пациентом врача.
- * Тут вся информация по этому событию.
+ * Посещение пациентом врача. Тут вся информация по этому событию.
+ *
  * @author Evgeniy Egorov, Aperum Projects
  */
 @Entity
@@ -74,8 +74,8 @@ public class Visit implements Serializable {
     }
     /*
      * С форенкеем в зависимой, с обратной связью. name="patient_id" это поле таблици форенкий
-    @ManyToOne
-    @JoinColumn(name="patient_id")
+     @ManyToOne
+     @JoinColumn(name="patient_id")
      * 
      */
     @ManyToOne
@@ -101,7 +101,7 @@ public class Visit implements Serializable {
     public void setExams(Set<Document> exams) {
         this.docs = exams;
     }
-    
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "visit_id")
     @OrderBy(value = "id desc")
@@ -115,9 +115,6 @@ public class Visit implements Serializable {
         this.attached = attached;
     }
 
-    
-    
-    
     /**
      * Дата обращения
      */
@@ -197,6 +194,11 @@ public class Visit implements Serializable {
         this.kod = kod;
     }
 
+    @Override
+    public String toString() {
+        return patient.getName() + " - " + getDate();
+    }
+
     //***********************************************************************************************************************************************************************
     //********* DAO
     //***********************************************************************************************************************************************************************
@@ -214,8 +216,8 @@ public class Visit implements Serializable {
             sess.close();
         }
     }
-    
-    public String getTextInfo(){
+
+    public String getTextInfo() {
         return "<span style='font-size:20.0pt;color:red'>&nbsp;Обращение</span><span style='font-size:16.0pt;color:black'><br>"
                 + "&nbsp;Дата обращения: " + Uses.format_dd_MMMM_yyyy.format(getDate())
                 + "<br>&nbsp;Код: "

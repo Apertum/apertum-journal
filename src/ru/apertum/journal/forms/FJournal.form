@@ -10,8 +10,12 @@
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="jMenuItemNewPoc">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&#x41d;&#x43e;&#x432;&#x44b;&#x439; &#x43f;&#x430;&#x446;&#x438;&#x435;&#x43d;&#x442;"/>
-            <Property name="toolTipText" type="java.lang.String" value=""/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="new_patient" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="" key="" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemNewPocActionPerformed"/>
@@ -19,8 +23,12 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="jMenuItemEditPoc">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&#x420;&#x435;&#x434;&#x430;&#x43a;&#x442;&#x438;&#x440;&#x43e;&#x432;&#x430;&#x442;&#x44c;"/>
-            <Property name="toolTipText" type="java.lang.String" value=""/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="edit" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="" key="" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemEditPocActionPerformed"/>
@@ -30,8 +38,12 @@
         </Component>
         <MenuItem class="javax.swing.JMenuItem" name="jMenuItemRemovePoc">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&#x423;&#x434;&#x430;&#x43b;&#x438;&#x442;&#x44c; &#x43f;&#x430;&#x446;&#x438;&#x435;&#x43d;&#x442;&#x430;"/>
-            <Property name="toolTipText" type="java.lang.String" value=""/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="remove_patient" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="" key="" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemRemovePocActionPerformed"/>
@@ -47,7 +59,9 @@
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="jMenuItemShowVisit">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&#x41f;&#x43e;&#x441;&#x43c;&#x43e;&#x442;&#x440;&#x435;&#x442;&#x44c; &#x43e;&#x431;&#x440;&#x430;&#x449;&#x435;&#x43d;&#x438;&#x435;"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="show_visit" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemShowVisitActionPerformed"/>
@@ -55,8 +69,12 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="jMenuItemNewVisit">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&#x41d;&#x43e;&#x432;&#x43e;&#x435; &#x43f;&#x43e;&#x441;&#x435;&#x449;&#x435;&#x43d;&#x438;&#x435;"/>
-            <Property name="toolTipText" type="java.lang.String" value=""/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="new_visit" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="" key="" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemNewVisitActionPerformed"/>
@@ -82,7 +100,9 @@
             </Menu>
             <MenuItem class="javax.swing.JMenuItem" name="miExit">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x412;&#x44b;&#x445;&#x43e;&#x434;"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="exit" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+                </Property>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
               <Events>
@@ -118,7 +138,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <EmptySpace min="0" pref="1121" max="32767" attributes="0"/>
+          <EmptySpace min="0" pref="1172" max="32767" attributes="0"/>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Component id="mainPanel" alignment="0" max="32767" attributes="0"/>
           </Group>
@@ -203,38 +223,33 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="spinnerFilterKarta" min="-2" pref="72" max="-2" attributes="1"/>
+                                      <EmptySpace min="10" max="32767" attributes="0"/>
+                                      <Component id="label1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="label3" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="label1" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Group type="102" attributes="0">
-                                                      <Component id="spinnerFilterKarta" min="-2" pref="72" max="-2" attributes="1"/>
-                                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                                  </Group>
-                                                  <Component id="dateFilterBirthday" min="-2" pref="136" max="-2" attributes="0"/>
-                                              </Group>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="dateFilterLastVisit" min="-2" pref="147" max="-2" attributes="0"/>
-                                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="textFieldFilterSecondName" min="-2" pref="192" max="-2" attributes="1"/>
-                                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="textFieldFilterAttachedNAME" max="32767" attributes="0"/>
-                                          </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="dateFilterLastVisit" max="32767" attributes="0"/>
+                                          <Component id="dateFilterBirthday" max="32767" attributes="0"/>
                                       </Group>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="102" alignment="1" attributes="0">
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="textFieldFilterSecondName" max="32767" attributes="1"/>
+                                  <Component id="textFieldFilterAttachedNAME" alignment="0" max="32767" attributes="0"/>
+                                  <Group type="102" attributes="0">
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                       <Component id="buttonClearFilter" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -252,21 +267,25 @@
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="spinnerFilterKarta" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="textFieldFilterSecondName" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="label1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="textFieldFilterAttachedNAME" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="dateFilterLastVisit" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="label1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="textFieldFilterSecondName" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="textFieldFilterAttachedNAME" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="label3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
                                   <Component id="dateFilterBirthday" min="-2" max="-2" attributes="0"/>
+                                  <Component id="label3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -281,7 +300,9 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="jLabel1">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="&#x2116; &#x43a;&#x430;&#x440;&#x442;&#x43e;&#x447;&#x43a;&#x438;"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="nom_case" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="textFieldFilterSecondName">
@@ -291,22 +312,30 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="label1">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="&#x424;&#x430;&#x43c;&#x438;&#x43b;&#x438;&#x44f;"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="sourname" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="label3">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="&#x414;&#x430;&#x442;&#x430; &#x440;&#x43e;&#x436;&#x434;&#x435;&#x43d;&#x438;&#x44f;"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="birthday" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel4">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="&#x414;&#x430;&#x442;&#x430; &#x43f;&#x43e;&#x441;&#x43b;&#x435;&#x434;&#x43d;&#x435;&#x433;&#x43e; &#x43e;&#x431;&#x440;&#x430;&#x449;&#x435;&#x43d;&#x438;&#x44f;"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="last_visit_date" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JButton" name="buttonApplyFilter">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="&#x418;&#x441;&#x43a;&#x430;&#x442;&#x44c;"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="search" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonApplyFilterActionPerformed"/>
@@ -314,7 +343,9 @@
                     </Component>
                     <Component class="javax.swing.JButton" name="buttonClearFilter">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="&#x41e;&#x442;&#x447;&#x438;&#x441;&#x442;&#x438;&#x442;&#x44c;"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="clear" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonClearFilterActionPerformed"/>
@@ -334,18 +365,20 @@
                         </Property>
                       </Properties>
                     </Component>
+                    <Component class="javax.swing.JTextField" name="textFieldFilterAttachedNAME">
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel2">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="attached_name" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+                        </Property>
+                      </Properties>
+                    </Component>
                     <Component class="com.toedter.calendar.JDateChooser" name="dateFilterBirthday">
                       <Properties>
                         <Property name="date" type="java.util.Date" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="null" type="code"/>
                         </Property>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="textFieldFilterAttachedNAME">
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel2">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="&#x41d;&#x430;&#x438;&#x43c;&#x435;&#x43d;&#x43e;&#x432;&#x430;&#x43d;&#x438;&#x435; &#x432;&#x43b;&#x43e;&#x436;&#x435;&#x43d;&#x438;&#x44f;"/>
                       </Properties>
                     </Component>
                   </SubComponents>
@@ -365,12 +398,12 @@
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="buttonRefresh" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="89" max="32767" attributes="0"/>
-                              <Component id="buttonRemoveParient" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="buttonAddPatient" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="46" max="32767" attributes="0"/>
+                              <Component id="buttonRemoveParient" min="-2" pref="140" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              <Component id="buttonEditPatient" min="-2" pref="140" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="buttonEditPatient" min="-2" max="-2" attributes="0"/>
+                              <Component id="buttonAddPatient" min="-2" pref="140" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -380,10 +413,10 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="buttonEditPatient" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="buttonAddPatient" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="buttonRemoveParient" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="buttonRefresh" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="buttonEditPatient" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
@@ -391,18 +424,14 @@
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JButton" name="buttonEditPatient">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="&#x420;&#x435;&#x434;&#x430;&#x43a;&#x442;&#x438;&#x440;&#x43e;&#x432;&#x430;&#x442;&#x44c;"/>
-                        <Property name="toolTipText" type="java.lang.String" value=""/>
-                      </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonEditPatientActionPerformed"/>
-                      </Events>
-                    </Component>
                     <Component class="javax.swing.JButton" name="buttonAddPatient">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="&#x41d;&#x43e;&#x432;&#x44b;&#x439; &#x43f;&#x43e;&#x441;&#x435;&#x442;&#x438;&#x442;&#x435;&#x43b;&#x44c;"/>
+                        <Property name="background" type="java.awt.Color" noResource="true" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="0" green="ff" red="0" type="rgb"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="new_client" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonAddPatientActionPerformed"/>
@@ -410,8 +439,15 @@
                     </Component>
                     <Component class="javax.swing.JButton" name="buttonRemoveParient">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="&#x423;&#x434;&#x430;&#x43b;&#x438;&#x442;&#x44c; &#x43f;&#x43e;&#x441;&#x435;&#x442;&#x438;&#x442;&#x435;&#x43b;&#x44f;"/>
-                        <Property name="toolTipText" type="java.lang.String" value="&#x423;&#x434;&#x430;&#x43b;&#x438;&#x442;&#x44c; &#x43f;&#x43e;&#x441;&#x435;&#x442;&#x438;&#x442;&#x435;&#x43b;&#x44f; &#x43d;&#x430; &#x432;&#x441;&#x435;&#x433;&#x434;&#x430;"/>
+                        <Property name="background" type="java.awt.Color" noResource="true" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="0" green="0" red="ff" type="rgb"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="remove_client" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="remobe_client_forever" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonRemoveParientActionPerformed"/>
@@ -419,10 +455,28 @@
                     </Component>
                     <Component class="javax.swing.JButton" name="buttonRefresh">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="&#x41e;&#x431;&#x43d;&#x43e;&#x432;&#x438;&#x442;&#x44c; &#x441;&#x43f;&#x438;&#x441;&#x43e;&#x43a; &#x43f;&#x43e;&#x441;&#x435;&#x442;&#x438;&#x442;&#x435;&#x43b;&#x435;&#x439;"/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="refresh_clients_list" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonRefreshActionPerformed"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="buttonEditPatient">
+                      <Properties>
+                        <Property name="background" type="java.awt.Color" noResource="true" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="0" green="ff" red="ff" type="rgb"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="edit" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="" key="" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                        </Property>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonEditPatientActionPerformed"/>
                       </Events>
                     </Component>
                   </SubComponents>
@@ -500,14 +554,14 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="panelPatientInfoButtons" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jScrollPane2" alignment="0" pref="413" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" alignment="0" pref="464" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane3" alignment="0" pref="393" max="32767" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
+                              <Component id="jScrollPane4" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
                                   <Component id="labelVisitsCaption" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="348" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -518,7 +572,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jScrollPane3" min="-2" pref="249" max="-2" attributes="0"/>
+                          <Component id="jScrollPane4" min="-2" pref="249" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="labelVisitsCaption" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -543,7 +597,7 @@
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace pref="161" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="buttonAddNewVisit" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="buttonShowVisit" min="-2" max="-2" attributes="0"/>
@@ -567,8 +621,12 @@
                   <SubComponents>
                     <Component class="javax.swing.JButton" name="buttonShowVisit">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="&#x41f;&#x43e;&#x441;&#x43c;&#x43e;&#x442;&#x440;&#x435;&#x442;&#x44c; &#x432;&#x438;&#x437;&#x438;&#x442;"/>
-                        <Property name="toolTipText" type="java.lang.String" value=""/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="show_visit" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="" key="" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonShowVisitActionPerformed"/>
@@ -576,8 +634,12 @@
                     </Component>
                     <Component class="javax.swing.JButton" name="buttonAddNewVisit">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="&#x41d;&#x43e;&#x432;&#x44b;&#x439; &#x432;&#x438;&#x437;&#x438;&#x442;"/>
-                        <Property name="toolTipText" type="java.lang.String" value=""/>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="new_visit" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="" key="" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                        </Property>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonAddNewVisitActionPerformed"/>
@@ -632,36 +694,30 @@
                     </Component>
                   </SubComponents>
                 </Container>
-                <Container class="javax.swing.JScrollPane" name="jScrollPane3">
-                  <Properties>
-                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                      <Border info="null"/>
-                    </Property>
-                  </Properties>
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                  <SubComponents>
-                    <Component class="javax.swing.JLabel" name="labelPatientInfo">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="&lt;html&gt; &lt;span style=&apos;font-size:20.0pt;color:red&apos;&gt;&#x41d;&#x435;&#x442; &#x434;&#x430;&#x43d;&#x43d;&#x44b;&#x445;" noResource="true"/>
-                        <Property name="verticalAlignment" type="int" value="1"/>
-                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                          <Border info="org.netbeans.modules.form.compat2.border.MatteColorBorderInfo">
-                            <MatteColorBorder/>
-                          </Border>
-                        </Property>
-                      </Properties>
-                    </Component>
-                  </SubComponents>
-                </Container>
                 <Component class="javax.swing.JLabel" name="labelVisitsCaption">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="12" style="1"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="&#x412;&#x438;&#x437;&#x438;&#x442;&#x44b;"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="ru/apertum/journal/forms/resources/FJournal.properties" key="visits" replaceFormat="translate.getString(&quot;{key}&quot;)"/>
+                    </Property>
                   </Properties>
                 </Component>
+                <Container class="javax.swing.JScrollPane" name="jScrollPane4">
+                  <AuxValues>
+                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                  </AuxValues>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                  <SubComponents>
+                    <Component class="javax.swing.JTextPane" name="labelPatientInfo">
+                      <Properties>
+                        <Property name="editable" type="boolean" value="false"/>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
               </SubComponents>
             </Container>
           </SubComponents>

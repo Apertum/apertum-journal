@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Evgeniy Egorov
+ * Copyright (C) 2015 Evgeniy Egorov
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,11 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
+import java.util.ResourceBundle;
 import javax.swing.JPanel;
 import ru.apertum.journal.IPatientController;
 import ru.apertum.journal.model.Patient;
+import ru.apertum.qsystem.client.Locales;
 import ru.apertum.qsystem.common.GsonPool;
 import ru.apertum.qsystem.common.exceptions.ClientException;
 
@@ -34,7 +36,7 @@ import ru.apertum.qsystem.common.exceptions.ClientException;
 public class PSimplePatient extends javax.swing.JPanel implements IPatientController {
 
     /**
-     * Creates new form PSimplePatient
+     * Creates new form PSimplePatient2
      */
     public PSimplePatient() {
         initComponents();
@@ -51,16 +53,11 @@ public class PSimplePatient extends javax.swing.JPanel implements IPatientContro
         jScrollPane1 = new javax.swing.JScrollPane();
         taComment = new javax.swing.JTextArea();
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ru.apertum.qsystem.QSystem.class).getContext().getResourceMap(PSimplePatient.class);
-        setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("Form.border.title"))); // NOI18N
-        setName("Form"); // NOI18N
-
-        jScrollPane1.setName("jScrollPane1"); // NOI18N
+        setBorder(javax.swing.BorderFactory.createTitledBorder("Комментарии"));
 
         taComment.setColumns(20);
-        taComment.setFont(resourceMap.getFont("taComment.font")); // NOI18N
+        taComment.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         taComment.setRows(5);
-        taComment.setName("taComment"); // NOI18N
         jScrollPane1.setViewportView(taComment);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -75,15 +72,9 @@ public class PSimplePatient extends javax.swing.JPanel implements IPatientContro
         );
     }// </editor-fold>//GEN-END:initComponents
 
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea taComment;
-    // End of variables declaration//GEN-END:variables
-
     @Override
     public String getDescription() {
-        return "Простая форма по умолчанию.";
+        return trn.getString("simp_def_form");
     }
 
     @Override
@@ -109,6 +100,7 @@ public class PSimplePatient extends javax.swing.JPanel implements IPatientContro
         cache.put(patient, data);
         getGUI();
     }
+    private static final ResourceBundle trn = ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal", Locales.getInstance().getLangCurrent());
 
     @Override
     public Patient savePatientData() {
@@ -131,30 +123,30 @@ public class PSimplePatient extends javax.swing.JPanel implements IPatientContro
 
     @Override
     public void print() {
-        
+
     }
 
     @Override
     public void export() {
-        
+
     }
 
     @Override
     public String caption1() {
         //return "";
-        return "Фамилия..";
+        return trn.getString("sourname");
     }
 
     @Override
     public String caption2() {
         //return "";
-        return "Имя, отчество..";
+        return trn.getString("full_name");
     }
 
     @Override
     public String caption3() {
         //return "";
-        return "Дата рождения..";
+        return trn.getString("date_of_birth");
     }
 
     @Override
@@ -187,7 +179,7 @@ public class PSimplePatient extends javax.swing.JPanel implements IPatientContro
     public String getExtColumnName(int column) {
         switch (column) {
             case 0:
-                return "Комментарии";
+                return trn.getString("comments");
             default:
                 throw new AssertionError(column);
         }
@@ -211,7 +203,7 @@ public class PSimplePatient extends javax.swing.JPanel implements IPatientContro
             d = data;
             cache.put(patient, data);
         }
-        return "&nbsp;Комментарии:<br>" + d.comments;
+        return "&nbsp;" + trn.getString("comments") + ":<br>" + d.comments;
     }
 
     private static class Data {
@@ -235,4 +227,9 @@ public class PSimplePatient extends javax.swing.JPanel implements IPatientContro
             this.comments = comments;
         }
     }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea taComment;
+    // End of variables declaration//GEN-END:variables
 }

@@ -23,12 +23,12 @@
             <url>src/ru/apertum/journal/forms/FVisitEditor.java</url>
             <bookmark id="2">
                 <name/>
-                <line>146</line>
+                <line>68</line>
                 <key/>
             </bookmark>
             <bookmark id="4">
                 <name/>
-                <line>890</line>
+                <line>895</line>
                 <key/>
             </bookmark>
         </file>
@@ -36,7 +36,7 @@
             <url>src/ru/apertum/journal/forms/FJournal.java</url>
             <bookmark id="5">
                 <name/>
-                <line>131</line>
+                <line>170</line>
                 <key/>
             </bookmark>
         </file>
@@ -53,13 +53,9 @@
         <group>
             <file>file:/E:/WORK/Journal/src/ru/apertum/journal/forms/FVisitEditor.java</file>
             <file>file:/E:/WORK/Journal/src/ru/apertum/journal/forms/FPatientMaster.java</file>
-            <file>file:/E:/WORK/Journal/src/ru/apertum/journal/model/Visit.java</file>
-            <file>file:/E:/WORK/Journal/src/ru/apertum/journal/forms/FDocMaster.java</file>
             <file>file:/E:/WORK/Journal/src/ru/apertum/journal/forms/FJournal.java</file>
-            <file>file:/E:/WORK/Journal/src/ru/apertum/journal/model/patients/PatientsTableModel.java</file>
-            <file>file:/E:/WORK/Journal/src/ru/apertum/journal/model/Storage.java</file>
-            <file>file:/E:/WORK/Journal/src/ru/apertum/journal/model/Document.java</file>
-            <file>file:/E:/WORK/Journal/src/ru/apertum/journal/model/Patient.java</file>
+            <file>file:/E:/WORK/Journal/src/ru/apertum/journal/forms/FDocMaster.java</file>
+            <file>file:/E:/WORK/Journal/src/ru/apertum/journal/forms/resources/FJournal.properties</file>
         </group>
     </open-files>
 </project-private>

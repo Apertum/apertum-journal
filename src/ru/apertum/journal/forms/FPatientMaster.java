@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -37,6 +38,7 @@ import ru.apertum.journal.model.Patient;
 import ru.apertum.journal.model.PatientBlank;
 import ru.apertum.journal.model.Storage;
 import ru.apertum.journal.model.patients.AttachedTableModel;
+import ru.apertum.qsystem.client.Locales;
 import ru.apertum.qsystem.common.QLog;
 import ru.apertum.qsystem.common.Uses;
 import ru.apertum.qsystem.common.exceptions.ClientException;
@@ -107,7 +109,7 @@ public class FPatientMaster extends javax.swing.JDialog {
      * @return готовый или отредактированный пациент. Если вернет null, значит был отказ от редактирования.
      */
     static Patient editPatient(Patient patient, IPatientController pc) {
-        getInstance().setTitle("Посетитель \"" + (patient == null ? "Новый" : (patient.getName())) + "\"");
+        getInstance().setTitle(java.text.MessageFormat.format(trn.getString("client_title_master"), new Object[] {(patient == null ? "Новый" : (patient.getName()))}));
         getInstance().setPatient(patient, pc);
         getInstance().setLocationRelativeTo(null);
         flag = false;
@@ -115,6 +117,7 @@ public class FPatientMaster extends javax.swing.JDialog {
         return flag ? getInstance().getPatient() : null;
     }
     private static boolean flag = false;
+    private static final ResourceBundle trn = ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal", Locales.getInstance().getLangCurrent());
     private Patient patient = null;
     private IPatientController blanc = null;
 
@@ -182,7 +185,7 @@ public class FPatientMaster extends javax.swing.JDialog {
         panelButtons.setBorder(new javax.swing.border.MatteBorder(null));
 
         buttonApply.setBackground(new java.awt.Color(255, 255, 0));
-        buttonApply.setText("Применить");
+        buttonApply.setText(trn.getString("apply")); // NOI18N
         buttonApply.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonApplyActionPerformed(evt);
@@ -190,21 +193,21 @@ public class FPatientMaster extends javax.swing.JDialog {
         });
 
         buttonCancel.setBackground(new java.awt.Color(255, 0, 0));
-        buttonCancel.setText("Отменить");
+        buttonCancel.setText(trn.getString("cancel")); // NOI18N
         buttonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonCancelActionPerformed(evt);
             }
         });
 
-        buttonPrint.setText("Печать");
+        buttonPrint.setText(trn.getString("print")); // NOI18N
         buttonPrint.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonPrintActionPerformed(evt);
             }
         });
 
-        buttonExport.setText("Экспорт");
+        buttonExport.setText(trn.getString("export")); // NOI18N
         buttonExport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonExportActionPerformed(evt);
@@ -212,7 +215,7 @@ public class FPatientMaster extends javax.swing.JDialog {
         });
 
         buttonOK.setBackground(new java.awt.Color(0, 255, 0));
-        buttonOK.setText("OK");
+        buttonOK.setText(trn.getString("ok")); // NOI18N
         buttonOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonOKActionPerformed(evt);
@@ -262,12 +265,12 @@ public class FPatientMaster extends javax.swing.JDialog {
             .addGap(0, 367, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("Параметры", panel);
+        jTabbedPane1.addTab(trn.getString("params"), panel); // NOI18N
 
         jPanel2.setBorder(new javax.swing.border.MatteBorder(null));
 
         btnRemoveAttached.setBackground(new java.awt.Color(255, 0, 0));
-        btnRemoveAttached.setText("Удалить");
+        btnRemoveAttached.setText(trn.getString("remove")); // NOI18N
         btnRemoveAttached.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRemoveAttachedActionPerformed(evt);
@@ -275,7 +278,7 @@ public class FPatientMaster extends javax.swing.JDialog {
         });
 
         btnAddAttached.setBackground(new java.awt.Color(0, 255, 0));
-        btnAddAttached.setText("Добавить");
+        btnAddAttached.setText(trn.getString("add")); // NOI18N
         btnAddAttached.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddAttachedActionPerformed(evt);
@@ -283,14 +286,14 @@ public class FPatientMaster extends javax.swing.JDialog {
         });
 
         btnEditAttached.setBackground(new java.awt.Color(255, 255, 0));
-        btnEditAttached.setText("Изменить");
+        btnEditAttached.setText(trn.getString("edit")); // NOI18N
         btnEditAttached.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditAttachedActionPerformed(evt);
             }
         });
 
-        btnDownloadAttached.setText("Загрузить");
+        btnDownloadAttached.setText(trn.getString("download")); // NOI18N
         btnDownloadAttached.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDownloadAttachedActionPerformed(evt);
@@ -342,7 +345,7 @@ public class FPatientMaster extends javax.swing.JDialog {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jTabbedPane1.addTab("Вложения", jPanel4);
+        jTabbedPane1.addTab(trn.getString("attachments"), jPanel4);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -361,11 +364,11 @@ public class FPatientMaster extends javax.swing.JDialog {
 
         textFieldFirstName.setText("jTextField2");
 
-        label1.setText("Фамилия");
+        label1.setText(trn.getString("sourname")); // NOI18N
 
-        label2.setText("Имя");
+        label2.setText(trn.getString("name")); // NOI18N
 
-        label3.setText("Дата рождения");
+        label3.setText(trn.getString("date_of_birth")); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -431,8 +434,8 @@ public class FPatientMaster extends javax.swing.JDialog {
     private void buttonApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonApplyActionPerformed
         apply();
         JOptionPane.showMessageDialog(this,
-                "Данные о посетителе были успешно сохранены",
-                "Сохранение",
+                trn.getString("client_data_was_saved_successfully"),
+                trn.getString("saving"),
                 JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_buttonApplyActionPerformed
 
@@ -440,8 +443,8 @@ public class FPatientMaster extends javax.swing.JDialog {
         // Обязательные поля
         if (textFieldSecondName.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null,
-                    "Введите параметр \"" + PatientBlank.getInstance().caption1() + "\"",
-                    "Не полные данные",
+                    java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal").getString("enter_param"), new Object[] {PatientBlank.getInstance().caption1()}),
+                    trn.getString("not_enaught_data"),
                     JOptionPane.NO_OPTION);
             textFieldSecondName.requestFocusInWindow();
             return;
@@ -470,8 +473,8 @@ public class FPatientMaster extends javax.swing.JDialog {
         } catch (ClientException ex) {
             System.err.println(ex);
             JOptionPane.showMessageDialog(this,
-                    "Ошибка сохранения посетителя.",
-                    "Сохранение",
+                    trn.getString("error_save_client"),
+                    trn.getString("saving"),
                     JOptionPane.ERROR_MESSAGE);
         }
 
@@ -486,8 +489,8 @@ public class FPatientMaster extends javax.swing.JDialog {
     private void btnAddAttachedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAttachedActionPerformed
         if (patient == null || patient.getId() == null) {
             JOptionPane.showMessageDialog(this,
-                    "Редактируемый клиент не сохранен. Сохраниете данные перед добавлением вложений.",
-                    "Новое вложение",
+                    trn.getString("not_saved_client_need_save_before"),
+                    trn.getString("new_attachment"),
                     JOptionPane.WARNING_MESSAGE);
         } else {
             addNewAttahed();
@@ -529,8 +532,8 @@ public class FPatientMaster extends javax.swing.JDialog {
         // если сегодня уже создали визит то его не нужно еще раз создавать, просто покажем его
 
         if (JOptionPane.showConfirmDialog(this,
-                "Будет добавлено новое вложение для клиента.",
-                "Новое вложение",
+                trn.getString("will_add_new_att_for_client"),
+                trn.getString("new_attachment"),
                 JOptionPane.YES_NO_OPTION) == 1) {
             return;
         }
@@ -548,8 +551,8 @@ public class FPatientMaster extends javax.swing.JDialog {
                 Storage.saveStorage(aa.getFile(), att.getId(), patient.getId(), null, null, att.getTitle());
             } catch (ClientException ex) {
                 JOptionPane.showMessageDialog(this,
-                        "Ошибка создания пиложения.",
-                        "Сохранение приложения",
+                        trn.getString("error_create_att"),
+                        trn.getString("saving_att"),
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -557,10 +560,12 @@ public class FPatientMaster extends javax.swing.JDialog {
             ((AttachedTableModel) attachedTable.getModel()).update(patient.getAttached());
             ((AttachedTableModel) attachedTable.getModel()).fireTableDataChanged();
         } else {
-            JOptionPane.showMessageDialog(this,
-                    "Не верные параметры вложения.",
-                    "Новое вложение",
-                    JOptionPane.ERROR_MESSAGE);
+            if (aa.isOKpress()) {
+                JOptionPane.showMessageDialog(this,
+                        trn.getString("discorrec_data_for_att"),
+                        trn.getString("new_attachment"),
+                        JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
@@ -572,12 +577,12 @@ public class FPatientMaster extends javax.swing.JDialog {
 
             final Attached attached = model.getRowAt(row);
             if (attached == null || JOptionPane.showConfirmDialog(this,
-                    "Вложение \"" + attached.getTitle() + "\" будет удалено безвозвратно?",
-                    "Удаление вложения",
+                    java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal").getString("will_add_remove"), new Object[] {attached.getTitle()}),
+                    trn.getString("remove_att"),
                     JOptionPane.YES_NO_OPTION) == 1) {
                 return;
             }
-            QLog.l().logger().debug("Удаляем приложение \"" + attached.getTitle() + "\"");
+            QLog.l().logger().debug(java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal").getString("removing_the_att"), new Object[] {attached.getTitle()}));
             // удалим навсегда
 
             patient.getAttached().remove(attached);
@@ -610,8 +615,8 @@ public class FPatientMaster extends javax.swing.JDialog {
                     Attached.saveAttached(attached);
                 } catch (ClientException ex) {
                     JOptionPane.showMessageDialog(this,
-                            "Ошибка создания пиложения.",
-                            "Сохранение приложения",
+                            trn.getString("error_create_att"),
+                            trn.getString("saving_att"),
                             JOptionPane.ERROR_MESSAGE);
                     return;
                 }
@@ -638,13 +643,13 @@ public class FPatientMaster extends javax.swing.JDialog {
             final byte[] bb = Storage.loadStorage(attached.getId());
 
             final JFileChooser fc = new JFileChooser();
-            fc.setDialogTitle("Сохранение вложения");
+            fc.setDialogTitle(trn.getString("saving_att"));
             fc.setCurrentDirectory(new File("."));
             fc.setSelectedFile(new File(attached.getFileName()));
             if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
                 if (fc.getSelectedFile().exists() && JOptionPane.showConfirmDialog(this,
-                        "Файл \"" + fc.getSelectedFile().getName() + "\" существует. Заменить новым?",
-                        "Сохранение вложения",
+                        java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal").getString("replace_file"), new Object[] {fc.getSelectedFile().getName()}),
+                        trn.getString("saving_att"),
                         JOptionPane.YES_NO_OPTION) == 1) {
                     return;
                 }

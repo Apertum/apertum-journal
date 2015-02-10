@@ -18,16 +18,23 @@
 package ru.apertum.journal.forms;
 
 import java.io.File;
+import java.util.ResourceBundle;
 import javax.swing.JFileChooser;
+import ru.apertum.qsystem.client.Locales;
 
 /**
  *
  * @author Evgeniy Egorov
  */
 public class FAttachedDlg extends javax.swing.JDialog {
+    private static final ResourceBundle trn = ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal", Locales.getInstance().getLangCurrent());
     
     private File f;
     private boolean ok = false;
+    
+    public boolean isOKpress(){
+        return ok;
+    }
 
     public boolean isOK() {
         return ok && !txtTitle.getText().isEmpty() && f != null && f.exists();
@@ -94,18 +101,18 @@ public class FAttachedDlg extends javax.swing.JDialog {
         btnFile = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Вложение");
+        setTitle(trn.getString("attachment")); // NOI18N
 
         jPanel1.setBorder(new javax.swing.border.MatteBorder(null));
 
-        btnOK.setText("OK");
+        btnOK.setText(trn.getString("ok")); // NOI18N
         btnOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnOKActionPerformed(evt);
             }
         });
 
-        btnCancel.setText("Отменить");
+        btnCancel.setText(trn.getString("Cancel")); // NOI18N
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
@@ -135,11 +142,11 @@ public class FAttachedDlg extends javax.swing.JDialog {
 
         txtFile.setEditable(false);
 
-        jLabel1.setText("Наименование");
+        jLabel1.setText(trn.getString("title")); // NOI18N
 
-        jLabel2.setText("Описание");
+        jLabel2.setText(trn.getString("description")); // NOI18N
 
-        jLabel3.setText("Файл");
+        jLabel3.setText(trn.getString("file")); // NOI18N
 
         btnFile.setText("...");
         btnFile.addActionListener(new java.awt.event.ActionListener() {
@@ -217,7 +224,7 @@ public class FAttachedDlg extends javax.swing.JDialog {
 
     private void btnFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFileActionPerformed
         final JFileChooser fc = new JFileChooser();
-        fc.setDialogTitle("Выберите файл для вложения");
+        fc.setDialogTitle(trn.getString("Choose a file for attachment"));
 
         fc.setCurrentDirectory(new File("."));
         if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {

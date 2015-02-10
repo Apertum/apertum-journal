@@ -18,11 +18,11 @@ package ru.apertum.journal.model.patients;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.ResourceBundle;
 import java.util.Set;
 import javax.swing.table.AbstractTableModel;
 import ru.apertum.journal.model.Attached;
-import ru.apertum.journal.model.Patient;
-import ru.apertum.journal.model.Visit;
+import ru.apertum.qsystem.client.Locales;
 
 /**
  * Модель таблици посещения пациента.
@@ -30,6 +30,12 @@ import ru.apertum.journal.model.Visit;
  * @author Evgeniy Egorov, Aperum Projects
  */
 public class AttachedTableModel extends AbstractTableModel {
+
+    private static final ResourceBundle translate = ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal", Locales.getInstance().getLangCurrent());
+
+    private static String loc(String key) {
+        return translate.getString(key);
+    }
 
     final private LinkedList<Attached> atts = new LinkedList<>();
 
@@ -73,9 +79,9 @@ public class AttachedTableModel extends AbstractTableModel {
             case 0:
                 return "№";
             case 1:
-                return "Наименование";
+                return loc("title");
             case 2:
-                return "Описание";
+                return loc("description");
             default:
                 throw new AssertionError();
         }

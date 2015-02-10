@@ -19,16 +19,24 @@ package ru.apertum.journal.model.patients;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
+import java.util.ResourceBundle;
 import java.util.Set;
 import javax.swing.table.AbstractTableModel;
 import ru.apertum.journal.model.Patient;
 import ru.apertum.journal.model.Visit;
+import ru.apertum.qsystem.client.Locales;
 
 /**
  * Модель таблици посещения пациента.
  * @author Evgeniy Egorov, Aperum Projects
  */
 public class VisitsTableModel extends AbstractTableModel {
+    
+    private static final ResourceBundle translate = ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal", Locales.getInstance().getLangCurrent());
+
+    private static String loc(String key) {
+        return translate.getString(key);
+    }
 
     /**
      * тот чьи визиты
@@ -79,9 +87,9 @@ public class VisitsTableModel extends AbstractTableModel {
             case 0:
                 return "№";
             case 1:
-                return "Дата посещения";
+                return loc("visit_tate");
             case 2:
-                return "Описание";
+                return loc("description");
             default:
                 throw new AssertionError();
         }
