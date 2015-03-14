@@ -315,6 +315,7 @@
                                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                                           <Font name="Monospaced" size="12" style="0"/>
                                         </Property>
+                                        <Property name="lineWrap" type="boolean" value="true"/>
                                         <Property name="rows" type="int" value="1"/>
                                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                                           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -343,6 +344,7 @@
                                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                                           <Font name="Monospaced" size="12" style="0"/>
                                         </Property>
+                                        <Property name="lineWrap" type="boolean" value="true"/>
                                         <Property name="rows" type="int" value="1"/>
                                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                                           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -373,6 +375,7 @@
                                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                                       <Font name="Monospaced" size="12" style="0"/>
                                     </Property>
+                                    <Property name="lineWrap" type="boolean" value="true"/>
                                     <Property name="rows" type="int" value="1"/>
                                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">

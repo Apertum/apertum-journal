@@ -1,21 +1,28 @@
 package ru.apertum.journal.forms;
 
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
+import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.ServiceLoader;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.ButtonGroup;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
@@ -27,6 +34,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import static ru.apertum.journal.About.date;
+import static ru.apertum.journal.About.load;
+import static ru.apertum.journal.About.ver;
+import ru.apertum.journal.IDocController;
 import ru.apertum.journal.Journal;
 import ru.apertum.journal.model.Attached;
 import ru.apertum.journal.model.Document;
@@ -40,6 +51,7 @@ import ru.apertum.qsystem.client.model.QTray;
 import ru.apertum.qsystem.common.QLog;
 import ru.apertum.qsystem.common.Uses;
 import ru.apertum.qsystem.common.exceptions.ClientException;
+import ru.apertum.qsystem.common.exceptions.ServerException;
 import ru.apertum.qsystem.common.model.QCustomer;
 
 /*
@@ -63,7 +75,7 @@ import ru.apertum.qsystem.common.model.QCustomer;
  * @author Evgeniy Egorov
  */
 public class FJournal extends javax.swing.JFrame {
-    
+
     private static final ResourceBundle translate = ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal", Locales.getInstance().getLangCurrent());
 
     private static String loc(String key) {
@@ -139,8 +151,7 @@ public class FJournal extends javax.swing.JFrame {
         label3.setVisible(PatientBlank.getInstance().caption3() != null && !PatientBlank.getInstance().caption3().isEmpty());
         dateFilterBirthday.setVisible(PatientBlank.getInstance().caption3() != null && !PatientBlank.getInstance().caption3().isEmpty());
         label3.setText(PatientBlank.getInstance().caption3());
-        
-        
+
         int ii = 1;
         final ButtonGroup bg = new ButtonGroup();
         final String currLng = Locales.getInstance().getLangCurrName();
@@ -159,7 +170,7 @@ public class FJournal extends javax.swing.JFrame {
             menuLangs.add(item);
         }
     }
-    
+
     public void setCurrentLang() {
         for (int i = 0; i < menuLangs.getItemCount(); i++) {
             if (((JRadioButtonMenuItem) menuLangs.getItem(i)).isSelected()) {
@@ -311,6 +322,8 @@ public class FJournal extends javax.swing.JFrame {
         jMenuFile = new javax.swing.JMenu();
         menuLangs = new javax.swing.JMenu();
         miExit = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        aboutMenu = new javax.swing.JMenuItem();
 
         jMenuItemNewPoc.setText(translate.getString("new_patient")); // NOI18N
         jMenuItemNewPoc.setToolTipText("null");
@@ -321,7 +334,7 @@ public class FJournal extends javax.swing.JFrame {
         });
         popupMenuPatients.add(jMenuItemNewPoc);
 
-        jMenuItemEditPoc.setText(translate.getString("edit_client")); // NOI18N
+        jMenuItemEditPoc.setText(translate.getString("edit")); // NOI18N
         jMenuItemEditPoc.setToolTipText("null");
         jMenuItemEditPoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -491,7 +504,7 @@ public class FJournal extends javax.swing.JFrame {
         });
 
         buttonEditPatient.setBackground(new java.awt.Color(255, 255, 0));
-        buttonEditPatient.setText(translate.getString("edit_client")); // NOI18N
+        buttonEditPatient.setText(translate.getString("edit")); // NOI18N
         buttonEditPatient.setToolTipText("null");
         buttonEditPatient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -698,6 +711,18 @@ public class FJournal extends javax.swing.JFrame {
 
         menuBarJournal.add(jMenuFile);
 
+        jMenu1.setText(translate.getString("about"));
+
+        aboutMenu.setText(translate.getString("about_journal"));
+        aboutMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutMenuActionPerformed(evt);
+            }
+        });
+        jMenu1.add(aboutMenu);
+
+        menuBarJournal.add(jMenu1);
+
         setJMenuBar(menuBarJournal);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -821,10 +846,56 @@ public class FJournal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_buttonRefreshActionPerformed
 
+    private void aboutMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuActionPerformed
+        Uses.loadPlugins("./plugins/");
+
+        final Properties settings = new Properties();
+        final InputStream inStream = settings.getClass().getResourceAsStream("/ru/apertum/journal/cfg/version.properties");
+
+        try {
+            settings.load(inStream);
+        } catch (IOException ex) {
+            throw new ServerException("Cant read version. " + ex);
+        }
+        load();
+        String st = "";
+        st = st + "\n" + ("*** Journal ***");
+        st = st + "\n" + (" version " + ver);
+        st = st + "\n" + (" date " + date);
+
+        st = st + "\n" + ("*** Editor \"" + PatientBlank.getInstance().getDescription() + "\" ID=" + PatientBlank.getInstance().getId());
+
+        for (final IDocController doc : ServiceLoader.load(IDocController.class)) {
+            st = st + "\n" + (" - Document \"" + doc.getName() + "\" docID=" + doc.getId());
+        }
+        JOptionPane.showMessageDialog(this,
+                st,
+                loc("about_journal"),
+                JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_aboutMenuActionPerformed
+
+    static final JFrame splash = new JFrame();
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        splash.setSize(200, 200);
+        final JLabel leb;
+        try {
+            splash.setIconImage(ImageIO.read(FJournal.class.getResource("/ru/apertum/journal/forms/resources/favicon.png"))); //NOI18N
+            leb = new JLabel(new ImageIcon(ImageIO.read(FJournal.class.getResource("/ru/apertum/journal/resources/journal.jpg"))));
+        } catch (IOException ex) {
+            System.err.println(ex);
+            throw new RuntimeException(ex);
+        }
+        splash.setLayout(new GridLayout(1, 1));
+
+        splash.add(leb);
+        splash.setAlwaysOnTop(true);
+        splash.setUndecorated(true);
+        splash.setLocationRelativeTo(null);
+        splash.setVisible(true);
 
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -935,6 +1006,7 @@ public class FJournal extends javax.swing.JFrame {
             });
 
             fj.setVisible(true);
+            splash.setVisible(false);
         });
     }
 
@@ -989,7 +1061,7 @@ public class FJournal extends javax.swing.JFrame {
             final Long id = (Long) tablePatients.getModel().getValueAt(tablePatients.getSelectedRow(), 0);
             final Patient patient = ((PatientsTableModel) tablePatients.getModel()).getPatientById(id);
             if (patient == null || JOptionPane.showConfirmDialog(this,
-                    java.text.MessageFormat.format(loc("will_remove_forever"), new Object[] {patient.getName()}),
+                    java.text.MessageFormat.format(loc("will_remove_forever"), new Object[]{patient.getName()}),
                     loc("removing_client"),
                     JOptionPane.YES_NO_OPTION) == 1) {
                 return;
@@ -1052,7 +1124,7 @@ public class FJournal extends javax.swing.JFrame {
             Visit visit = ((VisitsTableModel) tableVisits.getModel()).getVisitByDate(new Date());
             if (visit == null) {
                 if (JOptionPane.showConfirmDialog(this,
-                        MessageFormat.format(loc("will_create_new_visit"), new Object[] {patient.getName()}),
+                        MessageFormat.format(loc("will_create_new_visit"), new Object[]{patient.getName()}),
                         loc("new_visit"),
                         JOptionPane.YES_NO_OPTION) == 1) {
                     return;
@@ -1161,6 +1233,7 @@ public class FJournal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem aboutMenu;
     private javax.swing.JButton buttonAddNewVisit;
     private javax.swing.JButton buttonAddPatient;
     private javax.swing.JButton buttonApplyFilter;
@@ -1174,6 +1247,7 @@ public class FJournal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenuItem jMenuItemEditPoc;
     private javax.swing.JMenuItem jMenuItemNewPoc;

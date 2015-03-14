@@ -53,8 +53,11 @@ public class PCommentDoc extends javax.swing.JPanel implements IDocController {
         jScrollPane1 = new javax.swing.JScrollPane();
         taComment = new javax.swing.JTextArea();
 
+        setBorder(javax.swing.BorderFactory.createTitledBorder(trn.getString("comments")));
+
         taComment.setColumns(20);
         taComment.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        taComment.setLineWrap(true);
         taComment.setRows(5);
         jScrollPane1.setViewportView(taComment);
 
@@ -62,14 +65,11 @@ public class PCommentDoc extends javax.swing.JPanel implements IDocController {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 

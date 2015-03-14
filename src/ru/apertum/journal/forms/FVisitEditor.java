@@ -373,6 +373,7 @@ public class FVisitEditor extends javax.swing.JFrame {
 
         textAreaLeftLeg.setColumns(20);
         textAreaLeftLeg.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        textAreaLeftLeg.setLineWrap(true);
         textAreaLeftLeg.setRows(1);
         textAreaLeftLeg.setBorder(javax.swing.BorderFactory.createTitledBorder(trn.getString("purpose_visit")));
         jScrollPane4.setViewportView(textAreaLeftLeg);
@@ -381,6 +382,7 @@ public class FVisitEditor extends javax.swing.JFrame {
 
         textAreaRightLeg.setColumns(20);
         textAreaRightLeg.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        textAreaRightLeg.setLineWrap(true);
         textAreaRightLeg.setRows(1);
         textAreaRightLeg.setBorder(javax.swing.BorderFactory.createTitledBorder(trn.getString("comments")));
         jScrollPane5.setViewportView(textAreaRightLeg);
@@ -391,6 +393,7 @@ public class FVisitEditor extends javax.swing.JFrame {
 
         textAreaCommonStatus.setColumns(20);
         textAreaCommonStatus.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        textAreaCommonStatus.setLineWrap(true);
         textAreaCommonStatus.setRows(1);
         textAreaCommonStatus.setBorder(javax.swing.BorderFactory.createTitledBorder(trn.getString("resons_visit")));
         jScrollPane3.setViewportView(textAreaCommonStatus);
@@ -561,7 +564,7 @@ public class FVisitEditor extends javax.swing.JFrame {
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jTabbedPane1.addTab(trn.getString("attachments"), jPanel10);
+        jTabbedPane1.addTab(trn.getString("atts"), jPanel10);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);

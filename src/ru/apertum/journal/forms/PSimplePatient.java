@@ -53,10 +53,11 @@ public class PSimplePatient extends javax.swing.JPanel implements IPatientContro
         jScrollPane1 = new javax.swing.JScrollPane();
         taComment = new javax.swing.JTextArea();
 
-        setBorder(javax.swing.BorderFactory.createTitledBorder("Комментарии"));
+        setBorder(javax.swing.BorderFactory.createTitledBorder(trn.getString("comments")));
 
         taComment.setColumns(20);
         taComment.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        taComment.setLineWrap(true);
         taComment.setRows(5);
         jScrollPane1.setViewportView(taComment);
 

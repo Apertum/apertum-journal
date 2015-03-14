@@ -404,8 +404,9 @@ public class FDocMaster extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
-        apply();
-        setVisible(false);
+        if (apply()) {
+            setVisible(false);
+        }
     }//GEN-LAST:event_buttonOKActionPerformed
 
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
@@ -452,14 +453,15 @@ public class FDocMaster extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowDeactivated
 
     private void buttonApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonApplyActionPerformed
-        apply();
-        JOptionPane.showMessageDialog(this,
-                trn.getString("doc_was_saved"),
-                trn.getString("saving"),
-                JOptionPane.INFORMATION_MESSAGE);
+        if (apply()) {
+            JOptionPane.showMessageDialog(this,
+                    trn.getString("doc_was_saved"),
+                    trn.getString("saving"),
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_buttonApplyActionPerformed
 
-    private void apply() {
+    private boolean apply() {
         // Обязательные поля
         if (tfNumber.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null,
@@ -467,7 +469,7 @@ public class FDocMaster extends javax.swing.JDialog {
                     trn.getString("not_enauht_data"),
                     JOptionPane.NO_OPTION);
             tfNumber.requestFocusInWindow();
-            return;
+            return false;
         }
 
         if (doc == null) {
@@ -489,9 +491,11 @@ public class FDocMaster extends javax.swing.JDialog {
                     trn.getString("err_save_doc"),
                     trn.getString("saving"),
                     JOptionPane.ERROR_MESSAGE);
+            return false;
         }
 
         result = true;
+        return true;
     }
 
     public void addNewAttahed() {
@@ -545,12 +549,12 @@ public class FDocMaster extends javax.swing.JDialog {
 
             final Attached attached = model.getRowAt(row);
             if (attached == null || JOptionPane.showConfirmDialog(this,
-                    java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal").getString("will_add_remove"), new Object[] {attached.getTitle()}),
+                    java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal").getString("will_add_remove"), new Object[]{attached.getTitle()}),
                     trn.getString("remove_att"),
                     JOptionPane.YES_NO_OPTION) == 1) {
                 return;
             }
-            QLog.l().logger().debug(java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal").getString("removing_the_att"), new Object[] {attached.getTitle()}));
+            QLog.l().logger().debug(java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal").getString("removing_the_att"), new Object[]{attached.getTitle()}));
             // удалим навсегда
 
             doc.getAttached().remove(attached);
@@ -616,7 +620,7 @@ public class FDocMaster extends javax.swing.JDialog {
             fc.setSelectedFile(new File(attached.getFileName()));
             if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
                 if (fc.getSelectedFile().exists() && JOptionPane.showConfirmDialog(this,
-                        java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal").getString("replace_file"), new Object[] {fc.getSelectedFile().getName()}),
+                        java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("ru/apertum/journal/forms/resources/FJournal").getString("replace_file"), new Object[]{fc.getSelectedFile().getName()}),
                         trn.getString("saving_att"),
                         JOptionPane.YES_NO_OPTION) == 1) {
                     return;
